@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+<img src="../public/images/snowboard-extreme-sports.jpeg" alt="avatar"/>
+<h1>Ceci est un site communautaire pour apprendre les figures de snowboard</h1>
+<h1>Liste des figures de snowboard</h1>
+
+    {% for figure in figures %}
+        <div class="card border-primary mb-3" style="max-width: 20rem;">
+          <div class="card-header"><img src="../public/images/trickMute.jpg" alt="Mute"/></div>
+          <div class="card-body">
+            <h4 class="card-title">
+            <div> <a href="{{ path('trick_show', {'id': figure.id}) }}" > {{ figure.name }} </a>  <img src="{{ asset('images/crayon.png') }}" alt="modifier"/><img src= "{{ asset('images/poubelle.jpg') }}"
+ alt="supprimer"/> </h4>
+          </div>
+        </div>
+        </div>
+    {% endfor %}
+<p>La page est accessible par tous les utilisateurs.
+
+Si l’utilisateur est connecté, il pourra cliquer sur :
+●	une petit icône en forme de stylo situé juste à côté du nom qui redirigera l’utilisateur vers un formulaire de modification de figure ;
+●	une corbeille située juste à côté du nom pour supprimer la figure.
+</p>
+{% endblock %}
