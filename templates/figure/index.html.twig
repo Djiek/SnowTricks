@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero">
+    <div class="hero-container" data-aos="fade-up">
+      <h1>Bienvenue sur SnowTricks ! </h1>
+      <h2>Ceci est un site communautaire pour apprendre les figures de snowboard</h2>
+      <a href="#about" class="btn-get-started scrollto"><i class="bx bx-chevrons-down"></i></a>
+    </div>
+  </section><!-- End Hero -->
+
+
+
+
+    <section id="services" class="services">
+     <main id="main">
+    <!-- ======= Figure ======= -->
+    <section id="about" class="about">
+      <div class="container">
+           <div class="section-title" data-aos="fade-in" data-aos-delay="100">
+          <h2>Figures</h2>
+        </div>
+    </section><!-- End About Section -->
+  </main>
+    
+  
+ <section id="services" class="services"> 
+      <div class="container"> 
+        <div class="row">
+        {% for figure in figures %}
+          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-5">
+            <div class="icon-box"  data-aos-delay="100"> 
+            <img src="{{ asset('images/trickMute.jpg') }}" alt="Mute"/><br/><br/>
+             <p class="title"><a href="{{ path('trick_show', {'id': figure.id}) }}" > {{ figure.name }} </a> 
+              {% if app.user %} 
+                  <a href="{{ path('Figure_edit', {'id': figure.id}) }}">
+                    <img src="{{ asset('images/crayon.png') }}" alt="modifier"/></a> 
+                  <form method="post" action ="{{ path('figure_deleted', {'id': figure.id}) }}" > 
+                      <input type="hidden" name="_method" value="delete">
+                      <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ figure.id)}}"> 
+                      <button><img src= "{{ asset('images/poubelle.jpg') }}" alt="supprimer" onsubmit="return confirm('Etes vous sûre de vouloir supprimer cette figure?')" />
+                      </button> 
+                  </form> 
+              {% endif %} 
+              </p> 
+        </div>  
+      </div>     
+         {% endfor %} 
+      </div>  
+          </div>
+    </section><!-- End Services Section -->
+    <p>La page est accessible par tous les utilisateurs.
+
+Si l’utilisateur est connecté, il pourra cliquer sur :
+●	une petit icône en forme de stylo situé juste à côté du nom qui redirigera l’utilisateur vers un formulaire de modification de figure ;
+●	une corbeille située juste à côté du nom pour supprimer la figure.
+</p> 
+
+
+{% endblock %}

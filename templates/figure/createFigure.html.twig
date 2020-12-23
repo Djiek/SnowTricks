@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme formFigure 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}Ajouter une figure{% endblock %}
+
+{% block body %}
+<br/>
+<section id="spaceShowFigure">
+   </section>
+<section id="showFigure">
+<img src= "{{ asset('images/snowboard-extreme-sports.jpeg') }}" alt="supprimer"/>
+         <div class="hero-container" data-aos="fade-up">
+         <div class="container">
+           <div  class="section-title" data-aos="fade-in" data-aos-delay="100">
+          <h2>Page de création de figure de snowboard</h2>
+        </div>
+    </div>
+<p id="smallSpace"></p>
+{{ form_start(formFigure) }}
+
+    {{ form_row(formFigure.name, { 'label':'Nom de la figure : ','attr': {'placeholder': "Nom de la figure"}})}}
+    {{ form_row(formFigure.description, { 'label':'Description : ','attr': {'placeholder': "Description de la figure"}})}}
+    {{ form_row(formFigure.tricksGroup, { 'label':'Niveau : '})}}
+
+    <button type="submit" class="btn btn-success">
+    {% if editMode %}
+    Enregistrer les modifications
+    {% else %}
+     Ajouter la figure
+     {% endif %}
+</button>
+    {{ form_end(formFigure) }}
+
+
+<br/>
+
+<p>Le formulaire comportera les champs suivants :
+●	une ou plusieurs illustration(s) ;
+●	une ou plusieures vidéo(s).
+
+Lorsque l’utilisateur soumet le formulaire, il faut que :
+●	il soit redirigé sur la page listant des figures avec un message flash donnant une indication concernant le bon déroulement de l'enregistrement en base de données en cas de succès.
+
+Pour les vidéos, l’utilisateur pourra coller une balise embed provenant de la plateforme de son choix (Youtube, Dailymotion…).
+
+</p>
+{% endblock %}
