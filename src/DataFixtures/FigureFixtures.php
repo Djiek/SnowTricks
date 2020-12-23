@@ -15,6 +15,9 @@ class FigureFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
+        $faker = \Faker\Factory::create('fr_FR');
+
+        $tricksGroups = [];
         for ($i = 1; $i <= 3; $i++) {
             $tricksGroup = new TricksGroup();
             if ($i === 1) {
@@ -24,49 +27,60 @@ class FigureFixtures extends Fixture
             } elseif ($i === 3) {
                 $tricksGroup->setName("Avancé");
             }
+            $tricksGroups[] = $tricksGroup;
             $manager->persist($tricksGroup);
-
-            for ($k = 1; $k <= 3; $k++) {
-                $user = new User();
-                $user->setLogin("user n°$k")
-                    ->setPassword("1234")
-                    // ->setImages($image)
-                    ->setMail("user$k@gmail.com");
-                $manager->persist($user);
-            }
-            for ($j = 1; $j <= 5; $j++) {
-                $figure = new Figure();
-                $figure->setName("figure n°$j")
-                    ->setDescription("description n°$j")
-                    ->setUser($user)
-                    ->setCreatedAt(new \DateTime())
-                    ->setTricksGroup($tricksGroup);
-                $manager->persist($figure);
-            }
-
-            for ($m = 1; $m <= mt_rand(3, 15); $m++) {
-                $image = new Images();
-                $image->setFigure($figure)
-                    ->setLink("https://www.activeoutdoorpursuits.com/wp-content/uploads/2019/01/Active-Outdoor-Pursuits-Snowboarding-AOP-website-banner.jpg");
-                $manager->persist($image);
-            }
-
-            for ($l = 1; $l <= mt_rand(3, 10); $l++) {
-                $video = new Videos();
-                $video->setFigure($figure)
-                    ->setLink("https://www.youtube.com/watch?v=8AWdZKMTG3U");
-                $manager->persist($video);
-            }
-
-            for ($n = 1; $n <= mt_rand(3, 7); $n++) {
-                $comment = new Comment();
-                $comment->setContent("commentaire n°$n")
-                    ->setUser($user)
-                    ->setFigure($figure)
-                    ->setCreatedAt(new \DateTime());
-                $manager->persist($comment);
-            }
         }
+
+        $users = [];
+        for ($k = 1; $k <= 3; $k++) {
+            $user = new User();
+            $user->setLogin($faker->firstName())
+                ->setPassword($faker->password())
+                ->setImage($faker->imageUrl())
+                ->setMail($faker->email());
+                 $users[] = $user;
+            $manager->persist($user);
+        }
+
+        $figures = [];
+        for ($j = 1; $j <= 5; $j++) {
+            $figure = new Figure();
+            $figure->setName($faker->word())
+                ->setDescription($faker->sentence())
+                ->setUser($users[array_rand($users)])
+                ->setCreatedAt($faker->dateTimeBetween('-1 months'))
+                ->setTricksGroup($tricksGroups[array_rand($tricksGroups)]);
+                $figures[] = $figure;
+            $manager->persist($figure);
+        }
+
+        for ($m = 1; $m <= mt_rand(3, 15); $m++) {
+            $image = new Images();
+            $image->setFigure($figures[array_rand($figures)])
+                ->setLink($faker->imageUrl());
+            $manager->persist($image);
+        }
+
+        for ($l = 1; $l <= mt_rand(3, 10); $l++) {
+            $video = new Videos();
+            $video->setFigure($figures[array_rand($figures)])
+                ->setLink($faker->imageUrl());
+            $manager->persist($video);
+        }
+
+        for ($n = 1; $n <= mt_rand(3, 7); $n++) {
+            $comment = new Comment();
+
+            $interval = (new \DateTime())->diff($figure->getCreatedAt());
+            $days = $interval->days;
+
+            $comment->setContent($faker->sentence())
+                ->setUser($users[array_rand($users)])
+                ->setCreatedAt($faker->dateTimeBetween( "-".$days.'days'))
+                ->setFigure($figures[array_rand($figures)]);
+            $manager->persist($comment);
+        }
+
         $manager->flush();
     }
 }
