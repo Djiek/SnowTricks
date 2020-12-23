@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Image;
 use App\Entity\Figure;
+use App\Form\CommentType;
 use App\Form\FigureType;
 use App\Repository\FigureRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,12 +16,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class FigureController extends AbstractController
 {
-    
+
     private $repo;
 
-    function __construct(FigureRepository $repo){
+    function __construct(FigureRepository $repo)
+    {
         $this->repo = $repo;
-        }
+    }
 
     /**
      * @Route("/", name="home")
@@ -29,51 +32,77 @@ class FigureController extends AbstractController
         $figures = $this->repo->findAll();
         return $this->render('figure/index.html.twig', [
             'controller_name' => 'FigureController',
-            'figures'=>$figures
+            'figures' => $figures
         ]);
     }
 
-     /**
+    /**
      * @Route("/create", name="create")
      * @Route("/{id}/edit", name="Figure_edit")
      */
-    public function form(Figure $figure = null,Request $request,EntityManagerInterface $manager): Response
+    public function form(Figure $figure = null, Request $request, EntityManagerInterface $manager): Response
     {
-        if(!$figure){
+        if (!$figure) {
             $figure = new Figure();
         }
 
-            $form = $this->createForm(FigureType::class,$figure);
+        $form = $this->createForm(FigureType::class, $figure);
 
-            $form->handleRequest($request);
+        $form->handleRequest($request);
 
-            if($form->isSubmitted() && $form->isValid()){
-                if (!$figure->getId()) {   
-                    $figure->setCreatedAt(new \DateTime());
-                } else {
-                    $figure->setUpdatedAt(new \DateTime());
-                }
-             
-                $manager->persist($figure);
-                $manager->flush();
-                return $this->redirectToRoute('trick_show',['id'=> $figure->getId()]);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if (!$figure->getId()) {
+                $figure->setCreatedAt(new \DateTime());
+            } else {
+                $figure->setUpdatedAt(new \DateTime());
             }
+            $figure->setUser($this->getUser());
+            $manager->persist($figure);
+            $manager->flush();
+            return $this->redirectToRoute('home');
+        }
 
-            return $this->render('figure/createFigure.html.twig', [
-                'formFigure' => $form->createView(),
-                'editMode' =>$figure->getId() !== null
-            ]);
-
+        return $this->render('figure/createFigure.html.twig', [
+            'formFigure' => $form->createView(),
+            'editMode' => $figure->getId() !== null
+        ]);
     }
 
-   /**
+    /**
      * @Route("/show/{id}", name="trick_show")
      */
-    public function show(Figure $figure ): Response
+    public function show(Figure $figure, Request $request, EntityManagerInterface $manager): Response
     {
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setCreatedAt(new \DateTime())
+                ->setFigure($figure);
+            $comment->setUser($this->getUser());
+            $manager->persist($comment);
+            $manager->flush();
+
+            return $this->redirectToRoute('trick_show', ['id' => $figure->getId()]);
+        }
+
         return $this->render('figure/showFigure.html.twig', [
             'figure' => $figure,
-             'editMode' =>$figure->getUpdatedAt() !== null
+            'commentForm' => $form->createView(),
+            'editMode' => $figure->getUpdatedAt() !== null
         ]);
+    }
+
+    /**
+     * @Route("/delete/{id}", name="figure_deleted", methods= "DELETE")
+     */
+    public function delete(Figure $figure, EntityManagerInterface $manager, Request $request): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $figure->getId(), $request->get('_token'))) {
+             $manager->remove($figure);
+             $manager->flush();
+        }
+         return $this->redirectToRoute('home');
     }
 }

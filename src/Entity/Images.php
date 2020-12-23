@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ImagesRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * @ORM\Entity(repositoryClass=ImagesRepository::class)
@@ -23,7 +24,8 @@ class Images
     private $link;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Figure::class, inversedBy="images")
+     * @ORM\ManyToOne(targetEntity=Figure::class, inversedBy="images",cascade={"persist"})
+     * @JoinColumn(onDelete="CASCADE")
      */
     private $figure;
 
@@ -54,5 +56,9 @@ class Images
         $this->figure = $figure;
 
         return $this;
+    }
+    public function __toString()
+    {
+        return $this->getLink();
     }
 }

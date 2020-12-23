@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\VideosRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * @ORM\Entity(repositoryClass=VideosRepository::class)
@@ -22,8 +23,11 @@ class Videos
      */
     private $link;
 
+//      @ORM\JoinColumn(name="figure_id", referencedColumnName="id", nullable=false) 
+//      @JoinColumn(onDelete="CASCADE")
+
     /**
-     * @ORM\ManyToOne(targetEntity=Figure::class, inversedBy="videos")
+     * @ORM\ManyToOne(targetEntity=Figure::class, inversedBy="videos",cascade={"persist", "remove"})
      */
     private $figure;
 

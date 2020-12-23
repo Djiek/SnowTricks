@@ -14,8 +14,7 @@ class FigureType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
-            //->add('group')
-           // ->add('user')
+            ->add('tricksGroup')
         ;
     }
 

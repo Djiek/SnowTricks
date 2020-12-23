@@ -6,14 +6,22 @@
 
 {% block body %}
 <br/>
-<h1>Page de création de figure de snowboard</h1>
-
+<section id="spaceShowFigure">
+   </section>
+<section id="showFigure">
+<img src= "{{ asset('images/snowboard-extreme-sports.jpeg') }}" alt="supprimer"/>
+         <div class="hero-container" data-aos="fade-up">
+         <div class="container">
+           <div  class="section-title" data-aos="fade-in" data-aos-delay="100">
+          <h2>Page de création de figure de snowboard</h2>
+        </div>
+    </div>
+<p id="smallSpace"></p>
 {{ form_start(formFigure) }}
 
     {{ form_row(formFigure.name, { 'label':'Nom de la figure : ','attr': {'placeholder': "Nom de la figure"}})}}
     {{ form_row(formFigure.description, { 'label':'Description : ','attr': {'placeholder': "Description de la figure"}})}}
-    {# {{ form_row(formFigure.group, { 'label':'Groupe : '})}} #}
-    
+    {{ form_row(formFigure.tricksGroup, { 'label':'Niveau : '})}}
 
     <button type="submit" class="btn btn-success">
     {% if editMode %}
@@ -27,20 +35,11 @@
 
 <br/>
 
-
-
 <p>Le formulaire comportera les champs suivants :
-●	nom ;
-●	description ;
-●	groupe de la figure ;
 ●	une ou plusieurs illustration(s) ;
 ●	une ou plusieures vidéo(s).
 
-Le formulaire n’est accessible que si l’utilisateur est authentifié.
-
 Lorsque l’utilisateur soumet le formulaire, il faut que :
-●	cette figure n’existe pas déjà en base de données (contrainte d’unicité sur le nom) ;
-●	il soit redirigé sur la page du formulaire en cas d'erreur, en précisant le(s) type(s) d'erreurs ;
 ●	il soit redirigé sur la page listant des figures avec un message flash donnant une indication concernant le bon déroulement de l'enregistrement en base de données en cas de succès.
 
 Pour les vidéos, l’utilisateur pourra coller une balise embed provenant de la plateforme de son choix (Youtube, Dailymotion…).

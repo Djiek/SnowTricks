@@ -3,52 +3,67 @@
 {% block title %}Hello FigureController!{% endblock %}
 
 {% block body %}
-<h1>Page de présentation d’une figure</h1>
-             </a>  <img src="{{ asset('images/crayon.png') }}" alt="modifier"/><img src= "{{ asset('images/poubelle.jpg') }}"
- alt="poubelle"/> </h4>
-la ou les video rattachées à la figure :
-<br/>{% for image in figure.image %}
-{{ image.link }}  <br/>
-      {% endfor %}
-	la ou les photos rattachées à la figure ; <br/>
+
+ <section id="spaceShowFigure">
+   </section>
+   
+<section id="showFigure">
+<img src= "{{ asset('images/snowboard-extreme-sports.jpeg') }}" alt="supprimer"/>
+         <div class="hero-container" data-aos="fade-up">
+                {% if app.user %} 
+                        <a href="{{ path('Figure_edit', {'id': figure.id}) }}">
+                        <img src="{{ asset('images/crayon.png') }}" alt="modifier"/></a> 
+                    <form  method="post" action ="{{ path('figure_deleted', {'id': figure.id}) }}" > 
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ figure.id)}}"> 
+                        <a  onClick="return confirm('Voulez-vous vraiment supprimer ce post ?')"><img src="{{ asset('images/poubelle.jpg') }}" alt="supprimer" />
+                        </a> 
+                    </form> 
+                {% endif %} 
+           <div class="section-title" data-aos="fade-in" data-aos-delay="100"> <h2> {{ figure.name }}</h2> </div>
+    </div>
+ 
+  </section>
 
 <br/> 
- <p> Catégorie : {{ figure.trickGroup.name }}</p> 
+ <p> Catégorie : {{ figure.tricksGroup.name }}</p> 
     <p>  Crée le :   {{ figure.createdAt | date('d/m/Y') }} à {{figure.createdAt | date('H.i')}}<br/></p>
              {% if figure.updatedAt  %}
                  <p> Mis à jour le :  {{ figure.updatedAt | date('d/m/Y') }} à {{figure.updatedAt | date('H.i')}}<br/></p>
              {% endif %} 
-         {{ figure.name }} <br/>
         {{ figure.description }}<br/>
 <br/>
 
+{% if app.user %}
+{{ form_start(commentForm)}}
+{{ form_row(commentForm.content)}}
+<button type="submit" class="btn btn-success">Valider</button>
+{{ form_end(commentForm)}}
+{% else %}
+<h2> Pour ajouter un commentaire, connectez vous </h2>
+<a href="{{path('security_login')}}" class="btn btn-primary">Connexion</a>
+{% endif %}
 
-{# <section id="commentaires">
-        <div class="comment">
-                <div class="row">
-                        <div class="col-3">
-                                {{comment.user}}
-                        </div>
+<section id="commentaires">
+<h1> Commentaires : </h1>
+        {% for comments in figure.comment %}
+                <div class="comment">
+                        <div class="row">
+                                <div class="col-3">
+                                        {{comments.user}} (<small>{{comments.createdAt | date('d/m/y')}} à {{comments.createdAt | date('H.i')}} )</small>
+                                </div>
+                                <div class="col">
+                                        {{comments.content | raw}}
+                                </div>
+                        </div> 
                 </div>
-        </div> #}
-
-
-
+        {% endfor %}
 </section>
 
 
-<h1>Espace de discussion commun autour d’une figure</h1>
-<p>Les utilisateurs qui ne sont pas authentifiés peuvent consulter les discussions de toutes les figures. En revanche, ils ne peuvent pas poster de message.
-
-Pour chaque message, il sera affiché les informations suivantes :
-●	le nom complet de l’auteur du message ;
-●	la photo de l’auteur du message ;
-●	la date de création du message ;
-●	le contenu du message.
-
-Dans cet espace de discussion, on peut voir la liste des messages postés par les membres, du plus récent au plus ancien.
+manque : la photo de l’auteur du message ;
+message :  du plus récent au plus ancien : ??? a verifier
 Ces messages doivent être paginés (10 par pages).
 
-Si l’utilisateur est authentifié, il peut voir un formulaire au dessus de la liste avec un champs “message” qui est obligatoire. L’utilisateur peut poster autant de message qu’il le souhaite.
 </p>
 {% endblock %}

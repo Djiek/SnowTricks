@@ -6,9 +6,14 @@ use App\Repository\FigureRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=FigureRepository::class)
+ *@UniqueEntity(
+ * fields= {"name"},
+ * message= "Cette figure existe déjà."
+ * )
  */
 class Figure
 {
@@ -35,7 +40,7 @@ class Figure
     private $createdAt;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime",nullable=true)
      */
     private $updatedAt;
 
@@ -46,17 +51,19 @@ class Figure
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=Images::class, mappedBy="figure")
+     * @ORM\OneToMany(targetEntity=Images::class, mappedBy="figure", cascade={"persist"})
      */
     private $images;
 
     /**
-     * @ORM\OneToMany(targetEntity=Videos::class, mappedBy="figure")
+     * @ORM\OneToMany(targetEntity=Videos::class, mappedBy="figure", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $videos;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="figure", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="figure", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $comment;
 

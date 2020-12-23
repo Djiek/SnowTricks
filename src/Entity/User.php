@@ -6,11 +6,18 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity(
+ * fields= {"mail"},
+ * message= "l'email que vous avez indiqué est déja utilisé."
+ * )
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id
@@ -25,12 +32,19 @@ class User
     private $login;
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min="8",minMessage="Le mot de passe doit faire au minimum 8 caractères")
      */
     private $password;
 
     /**
+     *@Assert\EqualTo(propertyPath="password", message="Les mots de passe ne sont pas identique")
+    */
+    public $confirm_password;
+
+    /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Email()
      */
     private $mail;
 
@@ -45,14 +59,14 @@ class User
     private $figures;
 
     /**
-     * @ORM\OneToOne(targetEntity=images::class, cascade={"persist", "remove"})
-     */
-    private $images;
-
-    /**
-     * @ORM\OneToMany(targetEntity=comment::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="user")
      */
     private $comment;
+
+    /**
+     * @ORM\Column(type="string", length=500, nullable=true)
+     */
+    private $image;
 
     public function __construct()
     {
@@ -143,18 +157,6 @@ class User
         return $this;
     }
 
-    public function getImages(): ?images
-    {
-        return $this->images;
-    }
-
-    public function setImages(?images $images): self
-    {
-        $this->images = $images;
-
-        return $this;
-    }
-
     /**
      * @return Collection|comment[]
      */
@@ -184,4 +186,32 @@ class User
 
         return $this;
     }
+
+    public function eraseCredentials(){}
+
+    public function getSalt(){}
+
+    public function getRoles() {
+        return ['ROLE_USER'];
+    }
+     public function getUserName(): ?string
+    {
+        return $this->login;
+    }
+       public function __toString()
+    {
+        return $this->login;
+    }
+
+       public function getImage(): ?string
+       {
+           return $this->image;
+       }
+
+       public function setImage(?string $image): self
+       {
+           $this->image = $image;
+
+           return $this;
+       }
 }
