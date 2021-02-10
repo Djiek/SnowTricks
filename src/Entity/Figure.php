@@ -56,14 +56,14 @@ class Figure
     private $images;
 
     /**
-     * @ORM\OneToMany(targetEntity=Videos::class, mappedBy="figure", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(onDelete="CASCADE")
+     * @ORM\OneToMany(targetEntity=Videos::class, mappedBy="figure", cascade={"persist"})
      */
     private $videos;
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="figure", orphanRemoval=true, cascade={"persist", "remove"})
      * @ORM\JoinColumn(onDelete="CASCADE")
+     * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     private $comment;
 
@@ -72,6 +72,11 @@ class Figure
      * @ORM\JoinColumn(nullable=false)
      */
     private $tricksGroup;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
 
     public function __construct()
     {
@@ -204,6 +209,7 @@ class Figure
 
         return $this;
     }
+    
 
     /**
      * @return Collection|comment[]
@@ -222,6 +228,7 @@ class Figure
 
         return $this;
     }
+  
 
     public function removeComment(comment $comment): self
     {
@@ -246,4 +253,17 @@ class Figure
 
         return $this;
     }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }  
+    
 }

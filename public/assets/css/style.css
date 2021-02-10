@@ -378,6 +378,46 @@ h6 {
     margin-bottom: -90px;
 }
 
+.cadreImage {
+    display: flex;
+}
+
+.tidyImage {
+    max-width: 300px;
+    max-height: 300px;
+}
+
+.cadreVideo {
+    display: flex;
+}
+
+.tidyVideo {
+    max-width: 300px;
+    max-height: 500px;
+}
+
+.bordureImage {
+    border: 2px solid black;
+}
+
+.bordureVideo {
+    border: 2px solid black;
+}
+
+.roundedImage {
+    overflow: hidden;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    width: 70px;
+    height: 70px;
+    border: 2px solid #2f4d5a;
+}
+
+.widthAvatar {
+    width: 100%;
+}
+
 #space {
     width: 30%;
     height: 30vh;
@@ -407,6 +447,16 @@ h6 {
     text-align: center;
 }
 
+.logosUpdateDelete {
+    border: 2px solid black;
+    display: inline-block;
+}
+
+.logoUpdateDelete {
+    border: 2px solid black;
+    display: inline-block;
+}
+
 #hero .hero-container {
     position: absolute;
     bottom: 0;
@@ -417,6 +467,15 @@ h6 {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    text-align: center;
+}
+
+#centerText {
+    margin-left: auto;
+    margin-right: auto;
+    /* margin-left: 700px;
+    margin-top: 13px; */
+    width: 20em;
     text-align: center;
 }
 

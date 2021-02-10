@@ -5,27 +5,23 @@ security:
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        users_in_memory: { memory: null }
-        in_database: 
-            entity: 
-                class: App\Entity\User
-                property: mail
+      users:
+          entity:
+                class: 'App\Entity\User'
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             anonymous: lazy
-            provider: in_database
-
-            form_login:
-                login_path: security_login
-                check_path: security_login
-
+            provider: users
+            guard:
+                authenticators:
+                    - App\Security\UserAuthentificatorAuthenticator
             logout:
-                path: security_logout
-                target: home
-
+                path: app_logout
+                # where to redirect after logout
+                # target: app_any_route
 
 
             # activate different ways to authenticate
