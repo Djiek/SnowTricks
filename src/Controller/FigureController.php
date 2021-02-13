@@ -64,9 +64,11 @@ class FigureController extends AbstractController
             $images = $form->get('images')->getData();
 
             foreach ($images as $image) {
-                $fileName = $imageUpload->upload($image->getFile());
+                if(!$image->getLink()){
+                     $fileName = $imageUpload->upload($image->getFile());
                 $image->setLink($fileName);
                 $figure->addImage($image);
+                }
             }
             if (!$figure->getId()) {
                 $figure->setCreatedAt(new \DateTime());
@@ -85,11 +87,14 @@ class FigureController extends AbstractController
 
             $figure->setUser($this->getUser());
 
-
+ if (!$figure->getId()) {
+           $message =  $this->addFlash('success', 'La figure a été enregistré en base de donnée avec succés.');
+  } else {
+       $message = $this->addFlash('success', 'La figure a été mis à jour.');
+  }
             $manager->persist($figure);
             $manager->flush();
-
-            $this->addFlash('success', 'La figure a été enregistré en base de donnée avec succés.');
+            $message;
             return $this->redirectToRoute('home');
         }
 

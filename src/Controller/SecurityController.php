@@ -31,16 +31,14 @@ class SecurityController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $imageFile = $form->get('image')->getData();
-            
             if ($imageFile) {
               $fileName =  md5(uniqid()) . '.' . $imageFile->guessExtension();
-      
         $imageFile->move(
             $this->getParameter('images_directory'),
             $fileName
         );
             }
-            $user->setimage($imageFile);
+            $user->setimage($fileName);
             $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
             $user->setToken(md5(uniqid()));
@@ -97,6 +95,7 @@ class SecurityController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $image = $form->get('image')->getData();
+                dd($image);
                 if (!empty($image)) {
                     if (!empty($user->getImage())) {
                         $name = $user->getImage();
@@ -147,7 +146,7 @@ class SecurityController extends AbstractController
                 $manager->flush();
             } catch (\Exception $e) {
                 $this->addFlash('warning', "une erreur est survenue");
-                return  $this->redirectToRoute('security_login');
+                return  $this->redirectToRoute('app_login');
             }
 
             $url = $this->generateUrl(
@@ -165,7 +164,7 @@ class SecurityController extends AbstractController
             $mailer->send($message);
 
             $this->addFlash('success', 'Un email de reinitialisation de mot de passe vous a été envoyé');
-            return  $this->redirectToRoute('security_login');
+            return  $this->redirectToRoute('app_login');
         }
         return $this->render('security/forgottenPassword.html.twig', ['emailForm' => $form->createView()]);
     }
@@ -179,7 +178,7 @@ class SecurityController extends AbstractController
 
         if (!$user) {
             $this->addFlash('warning', 'Token inconnu');
-            return $this->redirectToRoute(('security_login'));
+            return $this->redirectToRoute(('app_login'));
         }
 
         if ($request->isMethod('POST')) {
@@ -191,7 +190,7 @@ class SecurityController extends AbstractController
 
             $this->addFlash('success', 'Votre mot de passe a été modifié.');
 
-            return $this->redirectToRoute('security_login');
+            return $this->redirectToRoute('app_login');
         } else {
             return $this->render('security/resetPassword.html.twig', ['token' => $token]);
         }
@@ -200,16 +199,19 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login", name="app_login")
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login( AuthenticationUtils $authenticationUtils): Response
     {
         // if ($this->getUser()) {
         //     return $this->redirectToRoute('target_path');
         // }
 
-        // get the login error if there is one
+      // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
+
+       
+       
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }

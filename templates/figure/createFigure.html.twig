@@ -31,25 +31,13 @@
   {# {% for image in formFigure.images %} #}
      {# <ul class="tags" data-prototype="{{ form_widget(formFigure.images.vars.prototype)|e('html_attr') }}"></ul>
           <button type="button" class="add_item_link" data-collection-holder-class="tags">Ajouter un upload</button>{{ form_row(formFigure.images, {'label':'Image(s) '})}} #}
-     <div class="bordureVideo">  {{ form_row(formFigure.images, {'label':'Image(s) '})}}   </div>
-       {# {% endfor %} #}
+     <div class="bordureVideo">  {{ form_row(formFigure.images, {'label':'Image(s) '}  )}}   </div>
+       {# {% endfor %} #} 
+
+       
 <br/>
     <div class="bordureVideo"><br/> <h6> Video(s) </h6 ><small>(Pour le lien video youtube, veuillez aller dans "partager" puis "integer la video" et copier le lien de la video. [Ex : https://www.youtube.com/embed/5mtNg2mf-Hg] )</small>  {{ form_row(formFigure.videos, {'label':false})}} </div>
    <br/>
-
-    {% if editMode %}
-    <h2>Image(s)</h2>
-    {% for image in figure.images %}
-        <div>
-            <img src="{{ asset('/assets/uploads/' ~ image.link) }}" alt="image" width="150">
-            <a href="{{ path('image_deleted', {id: image.id})}}" data-delete data-token="{{ csrf_token('delete'~ image.id)}}"> <img src= "{{ asset('images/poubelle.jpg') }}" alt="supprimer"/></a> </a>
-        </div>
-
-    {% endfor %}
- 
-
-
-   {% endif %}
 
    {% if editMode %}
      <a class="logosUpdateDelete btn btn-danger" onClick="return confirm('Voulez-vous vraiment supprimer ce post ?')" href="{{ path('figure_deleted', {'id': figure.id}) }}"> 
@@ -65,9 +53,23 @@
      {% endif %}
 </button>
     {{ form_end(formFigure) }}
-<br/>
+<br/><br/><br/><br/><br/><br/><br/><br/>
 
 
+    <h1>Bootstrap 4.2 - Saisie de fichier (File browser)</h1>
+    <form method="post" name="oTeleversement" id="oTeleversement" action="script.php" enctype="multipart/form-data">
+    <div class="custom-file">
+      <input type="file" class="custom-file-input"/>
+      <label class="custom-file-label">Sélectionner un fichier</label>
+    </div>
+    </form>
+     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+ 
+   <script>
+      $("input[type=file]").change(function (e){$(this).next('.custom-file-label').text(e.target.files[0].name);})
+    </script>
 
 
 {% endblock %}

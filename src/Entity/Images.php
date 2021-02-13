@@ -19,7 +19,7 @@ class Images
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=500, nullable=false)
+     * @ORM\Column(type="string", length=500, nullable=true)
      */
     private $link;
 

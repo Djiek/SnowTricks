@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class RegistrationType extends AbstractType
 {
@@ -21,9 +22,41 @@ class RegistrationType extends AbstractType
             ->add('image', FileType::class, [
                 'label' => false,
                 'mapped' => false,
-                'required' => false
+                'required' => false,
+                //'label_attr' => ['class' => 'custom-file-label', 'type' => 'file'],
+                  'attr' => array('placeholder' => 'Selectionner un fichier','class' => 'custom-file-label', 'type' => 'file' ),
+                  'constraints' => [
+                     new File([
+                         'maxSize' => '1024k',
+                         'mimeTypes' => [
+                             'image/jpeg',
+                             'image/jpg',
+                             'image/png',
+
+                         ],
             ])
-        ;
+             ],
+              ]);
+            //   ->add('file', FileType::class, [
+            //     'required' => false,
+            //     'constraints' => [
+            //         new File([
+            //             'maxSize' => '1024k',
+            //             'mimeTypes' => [
+            //                 'image/jpeg',
+            //                 'image/jpg',
+            //                 'image/png',
+
+            //             ],
+            //         ])
+            //     ],
+            //     // 'label_attr' => ['class' => 'custom-file-label', 'type' => 'file'],
+            //     'attr' => array('placeholder' => 'Selectionner un fichier' ),
+            //     //  'label_attr' => [
+            //     //     'class' => 'custom-file-label'
+            //     // ]
+            // ]);
+      
     }
 
     public function configureOptions(OptionsResolver $resolver)

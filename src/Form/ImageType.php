@@ -29,7 +29,11 @@ public function buildForm(FormBuilderInterface $builder, array $options)
                         'mimeTypesMessage' => 'Le format de l\'image n\'est pas valide.(png,jpeg et jpg accepté)',
                     ])
                 ],
-                'label' => false,
+                // 'label_attr' => ['class' => 'custom-file-label', 'type' => 'file'],
+                'attr' => array('placeholder' => 'Selectionner un fichier' ),
+                //  'label_attr' => [
+                //     'class' => 'custom-file-label'
+                // ]
             ])
          ;
     }

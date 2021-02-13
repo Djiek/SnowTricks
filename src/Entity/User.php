@@ -68,12 +68,12 @@ class User implements UserInterface
     */
     private $image;
 
-    /**
-     * @Assert\File(
-     * maxSize = "120k",
-     * mimeTypes = {"image/jpeg", "image/png", "image/jpg"},
-     * mimeTypesMessage = "Ce fichier doit être une image au format jpeg,jpg ou png")
-     */
+    // /**
+    //  * @Assert\File(
+    //  * maxSize = "120k",
+    //  * mimeTypes = {"image/jpeg", "image/png", "image/jpg"},
+    //  * mimeTypesMessage = "Ce fichier doit être une image au format jpeg,jpg ou png")
+    //  */
     private $file;
 
     /**
