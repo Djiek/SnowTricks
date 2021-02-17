@@ -31,7 +31,20 @@
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
-<!-- ======= Header ======= -->
+
+  <div id="centerText"> {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+ </div>
+
+ <div id="centerText"> {% for message in app.flashes('warning') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+ </div>
   <header id="header" class="fixed-top header-transparent">
     <div class="container d-flex align-items-center">
 
@@ -39,17 +52,29 @@
         <h1 class="text-light"><a href="{{ path('home') }}"><span>SnowTricks</span></a></h1>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+
       </div>
 
-      <nav class="nav-menu d-none d-lg-block">
-        <ul>
+            {% if app.user %}  
+          {% if app.user.image %} 
+       <div class="roundedImage">  <a  href="{{ path('editProfil', {'id': app.user.id}) }}"> <img class="widthAvatar" src="{{ asset('/assets/uploads/' ~ app.user.image) }}" alt="image" > </a>  </div>Hello, {{ app.user }}  
+ {% else %}
+       <div class="roundedImage">    <a href="{{ path('editProfil', {'id': app.user.id}) }}"><img class="widthAvatar" src="{{ '/images/avatar.png'}}" alt="Mute" /></a> </div>Hello, {{ app.user }}   
+{% endif %} 
+        {% endif %} 
+    
+ 
+       
+
+  <nav class="nav-menu d-none d-lg-block">
+      <ul>
         {% if app.user %}
           <li><a href="{{ path('create') }}">Ajouter un tricks</a></li>
         {% endif %}
           {% if not app.user %}
-              <li><a href="{{ path('security_login')}}">Se connecter </a></li>
+              <li><a href="{{ path('app_login')}}">Se connecter </a></li>
           {% else %}
-              <li><a href="{{ path('security_logout') }}">Se deconnecter </a></li>
+              <li><a href="{{ path('app_logout') }}">Se deconnecter </a></li>
            {% endif %}
 
         </ul>
@@ -90,7 +115,13 @@
    
        
 
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+        <script src="{{asset('/assets/js/images.js')}}"></script>
+          {# <script src="{{asset('/assets/js/videos.js')}}"></script> #}
+          <script src="{{asset('/assets/js/a2lix_sf_collection.js')}}"></script>
+           <script src="{{asset('/assets/js/upload.js')}}"></script>
+           
+      {% endblock %}
     </body>
   
 </html>

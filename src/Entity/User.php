@@ -65,14 +65,40 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=500, nullable=true)
-     */
+    */
     private $image;
+
+    // /**
+    //  * @Assert\File(
+    //  * maxSize = "120k",
+    //  * mimeTypes = {"image/jpeg", "image/png", "image/jpg"},
+    //  * mimeTypesMessage = "Ce fichier doit être une image au format jpeg,jpg ou png")
+    //  */
+    private $file;
+
+    /**
+     * @ORM\Column(type="string", length=500, nullable=true)
+     */
+    private $resetToken;
 
     public function __construct()
     {
         $this->figures = new ArrayCollection();
         $this->comment = new ArrayCollection();
     }
+
+     public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function setFile( $file): self
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
 
     public function getId(): ?int
     {
@@ -211,6 +237,18 @@ class User implements UserInterface
        public function setImage(?string $image): self
        {
            $this->image = $image;
+
+           return $this;
+       }
+
+       public function getResetToken(): ?string
+       {
+           return $this->resetToken;
+       }
+
+       public function setResetToken(?string $resetToken): self
+       {
+           $this->resetToken = $resetToken;
 
            return $this;
        }

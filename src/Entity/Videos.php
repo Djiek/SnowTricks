@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\VideosRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 
@@ -11,6 +12,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
  */
 class Videos
 {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -22,9 +24,6 @@ class Videos
      * @ORM\Column(type="string", length=500)
      */
     private $link;
-
-//      @ORM\JoinColumn(name="figure_id", referencedColumnName="id", nullable=false) 
-//      @JoinColumn(onDelete="CASCADE")
 
     /**
      * @ORM\ManyToOne(targetEntity=Figure::class, inversedBy="videos",cascade={"persist", "remove"})
