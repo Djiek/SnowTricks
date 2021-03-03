@@ -25,8 +25,8 @@ To install the project :
 
 * To download the project, please clone the github project with the repository link :
 ```$ git clone https://github.com/Djiek/SnowTricks```
-* When this is done, please copy the "professional_blog" database which is copied to the root of the project in phpMyAdmin.
-* Update your BDD credentials in Professional blog\app\.env.
+* When this is done, please copy the "SnowTricks" database which is copied to the root of the project in phpMyAdmin.
+* Update your BDD credentials in SnowTricks\app\.env
 * Install vendor folder :
 ```
 $ composer install
