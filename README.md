@@ -25,12 +25,10 @@ To install the project :
 
 * To download the project, please clone the github project with the repository link :
 ```$ git clone https://github.com/Djiek/SnowTricks```
-* When this is done, please copy the "SnowTricks" database which is copied to the root of the project in phpMyAdmin.
 * Update your BDD credentials in SnowTricks\app\.env
-* Install vendor folder :
+* Update your mailer_url : ex : MAILER_URL=gmail://name@gmail.com:password@localhost?encryption=tls&auth_mode=oauth
 ```
 $ composer install
-$ npm install
-$ composer require server --dev
+$ php bin/console doctrine:migrations:migrate
 $ php bin/console server:run
 ```
