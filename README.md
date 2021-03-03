@@ -22,12 +22,13 @@ A list of technologies used within the project:
 ***
 SnowTricks requires php 7.3.12 to run.
 To install the project :
-```
-*To download the project, please clone the github project with the repository link :
-$ git clone https://github.com/Djiek/SnowTricks
+
+* To download the project, please clone the github project with the repository link :
+```$ git clone https://github.com/Djiek/SnowTricks```
 * When this is done, please copy the "professional_blog" database which is copied to the root of the project in phpMyAdmin.
 * Update your BDD credentials in Professional blog\app\.env.
 * Install vendor folder :
+```
 $ composer install
 $ npm install
 $ composer require server --dev
