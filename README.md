@@ -1,5 +1,4 @@
 # SnowTricks
-***
 SnowTricks is a community site for learning snowboard tricks.
 ***
 ## Technologies
