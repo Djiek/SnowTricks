@@ -20,3 +20,5 @@ a2lix_lib.sfCollection.init({
 $(document).ready(function() {
     bsCustomFileInput.init()
 })
+
+$(document).on("change", "input[type=file]", function(e) { $(this).next('.custom-file-label').text(e.target.files[0].name); })

@@ -209,7 +209,6 @@ class Figure
 
         return $this;
     }
-    
 
     /**
      * @return Collection|comment[]
@@ -228,7 +227,6 @@ class Figure
 
         return $this;
     }
-  
 
     public function removeComment(comment $comment): self
     {
@@ -264,6 +262,5 @@ class Figure
         $this->slug = $slug;
 
         return $this;
-    }  
-    
+    }
 }

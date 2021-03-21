@@ -1,64 +1,82 @@
 {% extends 'base.html.twig' %}
-
 {% block title %}Accueil{% endblock %}
-
 {% block body %}
 
      
   <!-- ======= Hero Section ======= -->
-  <section id="hero">
-  <div id="confirmInscription"> {% for message in app.flashes('success') %}
+    <div id="hero">
+        <div> {% for message in app.flashes('success') %}
             <div class="alert alert-success">
                 {{ message }}
             </div>
         {% endfor %}
-</div>
-    <div class="hero-container" data-aos="fade-up">
-      <h1>Bienvenue sur SnowTricks ! </h1>
-      <h2>Ceci est un site communautaire pour apprendre les figures de snowboard</h2>
-      <a href="#about" class="btn-get-started scrollto"><i class="bx bx-chevrons-down"></i></a>
+        </div>
+        <div class="hero-container" data-aos="fade-up">
+            <h1>Bienvenue sur SnowTricks ! </h1>
+            <h2>Ceci est un site communautaire pour apprendre les figures de snowboard</h2>
+            <a href="#about" class="btn-get-started scrollto"><i class="bx bx-chevrons-down"></i></a>
+        </div>
+    </div><!-- End Hero -->
+
+    <div  class="services">
+        <div id="main">
+            <!-- ======= Figure ======= -->
+            <div id="about" class="about">
+                <div class="container">
+                    <div class="section-title" data-aos="fade-in" data-aos-delay="100">
+                        <h2>Figures</h2>
+                    </div>
+                </div>
+            </div><!-- End About Section -->
+        </div>
     </div>
-  </section><!-- End Hero -->
 
-
-
-
-    <section id="services" class="services">
-     <main id="main">
-    <!-- ======= Figure ======= -->
-    <section id="about" class="about">
-      <div class="container">
-           <div class="section-title" data-aos="fade-in" data-aos-delay="100">
-          <h2>Figures</h2>
-        </div>
-    </section><!-- End About Section -->
-  </main>
-    
-  
- <section id="services" class="services"> 
-      <div class="container"> 
-        <div class="row">
-        {% for figure in figures %}
-          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-5">
-            <div class="icon-box title"  data-aos-delay="100"> 
-           {% if figure.images|length > 0 %} 
-        <div>
-                 <img src="{{ asset('/assets/uploads/' ~ figure.images[0].link) }}" alt="image" width="200">
-        </div>
- {% else %}
-        <img src="{{ '/images/snowboard-extreme-sports.jpeg'}}" alt="Mute" width="200"/>
-{% endif %} <br/><br/>
-             <a href="{{ path('trick_show', {'slug': figure.slug}) }}" > {{ figure.name }} </a> 
-              {% if app.user %} 
-                  <a class="logoUpdateDelete" href="{{ path('Figure_edit', {'slug': figure.slug}) }}">
-                    <img src="{{ asset('images/crayon.png') }}" alt="modifier"/></a> 
-                     <a class="logoUpdateDelete" onClick="return confirm('Voulez-vous vraiment supprimer ce post ?')" href="{{ path('figure_deleted', {'id': figure.id}) }}">  
-                     <img src= "{{ asset('images/poubelle.jpg') }}" alt="supprimer"/></a> 
-              {% endif %}  
+    <div class="services"> 
+        <div class="container"> 
+            <div class="row">
+                {% for figure in figures %}
+                <div class="col-md-6 col-lg-4 d-flex align-items-stretch mb-4 mb-lg-4">
+                    <div class="icon-box title" > 
+                        {% if figure.images|length > 0 %} 
+                        <div>
+                            <img class="imageIndex" src="{{ asset('/assets/uploads/' ~ figure.images[0].link) }}" alt="image">
+                        </div>
+                        {% else %}
+                            <img class="imageIndex" src="{{ '/images/snowboard-extreme-sports.jpeg'}}" alt="Mute">
+                        {% endif %} <br/><br/>
+                        <a href="{{ path('trick_show', {'slug': figure.slug}) }}" > {{ figure.name }} </a> 
+                        {% if app.user %} 
+                        <a href="{{ path('Figure_edit', {'slug': figure.slug}) }}">
+                            <img src="{{ asset('images/crayon.png') }}" alt="modifier"/></a> 
+                        <a onClick="return confirm('Voulez-vous vraiment supprimer ce post ?')" href="{{ path('figure_deleted', {'id': figure.id}) }}">  
+                            <img src= "{{ asset('images/poubelle.jpg') }}" alt="supprimer"/></a> 
+                        {% endif %}  
+                    </div>  
+                </div>     
+                {% endfor %} 
             </div>  
-          </div>     
-         {% endfor %} 
-      </div>  
-          </div>
-    </section>
+        </div> 
+
+    <div>
+        {% set pages = (total / limit)|round(0,'ceil') %}
+        <ul class="pagination" id="pagination-flickr">
+            <li  class="{{ (page == 1) ? 'page-item disabled' : '' }}">
+                <a href="{{ (page > 1) ? '?page=' ~ (page - 1) : '' }}">
+                    <i>&laquo;</i>
+                </a>  
+            </li>
+            
+            {% for item in 1.. pages %}
+                <li class='{{ (page == item) ? 'page-item active' : '' }}'>
+                    <a href="?page={{item}}">{{item}}</a>
+                </li> 
+            {% endfor %} 
+                <li  class="{{ (page == pages ) ? 'page-item disabled' : '' }}">
+                    <a href="{{ (page < pages) ? '?page=' ~ (page + 1) : '' }}">
+                        <i>&raquo;</i>
+                    </a>  
+                </li> 
+        </ul>
+    </div>
+</div>
 {% endblock %}

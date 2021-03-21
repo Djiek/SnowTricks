@@ -53,7 +53,7 @@ class Images
         return $this->file;
     }
 
-    public function setFile( $file): self
+    public function setFile($file): self
     {
         $this->file = $file;
 

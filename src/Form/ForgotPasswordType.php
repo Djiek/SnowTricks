@@ -10,18 +10,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ForgotPasswordType extends AbstractType
 {
-public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('mail',EmailType::class)
-            ->add('Envoyer',SubmitType::class)
-        ;
+            ->add('mail', EmailType::class)
+            ->add('Envoyer', SubmitType::class);
     }
 
-      public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-       //     'data_class' => User::class,
+            //     'data_class' => User::class,
         ]);
     }
 }
