@@ -11,10 +11,10 @@ use Symfony\Component\Validator\Constraints\File;
 
 class ImageType extends AbstractType
 {
-public function buildForm(FormBuilderInterface $builder, array $options)
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-           // ->add('link', FileType::class);
             ->add('file', FileType::class, [
                 'required' => false,
                 'constraints' => [
@@ -29,16 +29,12 @@ public function buildForm(FormBuilderInterface $builder, array $options)
                         'mimeTypesMessage' => 'Le format de l\'image n\'est pas valide.(png,jpeg et jpg accepté)',
                     ])
                 ],
-                // 'label_attr' => ['class' => 'custom-file-label', 'type' => 'file'],
-                'attr' => array('placeholder' => 'Selectionner un fichier' ),
-                //  'label_attr' => [
-                //     'class' => 'custom-file-label'
-                // ]
-            ])
-         ;
+                //  'label_attr' => ['class' => 'custom-file-label', 'type' => 'file'],
+                'attr' => array('placeholder' => 'Selectionner un fichier'),
+            ]);
     }
 
-      public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Images::class,

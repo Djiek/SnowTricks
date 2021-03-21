@@ -3,40 +3,41 @@
 {% block title %}Connexion{% endblock %}
 
 {% block body %}
- <section id="space">
-  </section>
+    <div class="space">
+    </div>   
     <section id="services" class="services">
-      <div class="container">
-           <div class="section-title" data-aos="fade-in" data-aos-delay="100">
-          <h2>Connexion</h2>
+        <div class="container">
+     
+            <div class="section-title" data-aos="fade-in" data-aos-delay="100">
+                <h2>Connexion</h2>
+            </div>
         </div>
     </section>
 
-{% if error %}
+    {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
-<div id="centerText" class="col-lg-6">
-    <div id="centerText" class="form-row">
-        <div class="col-md-6 form-group">
-
-<form method="post">
-    <div id="centerText" class="form-group">
-        <label for="inputMail">Mail</label>
-        <input type="text" value="{{ last_username }}" name="mail" id="inputMail" class="form-control" required autofocus>
-    </div> 
-    <div id="centerText" class="form-group">   
-        <label for="inputPassword">Mot de passe :</label>
-        <input type="password" name="password" id="inputPassword" class="form-control" required>
-    </div>
-    <input type="hidden" name="_csrf_token"value="{{ csrf_token('authenticate') }}">
-        <div id="centerText" class="form-group">
-            <button type="submit" class="btn btn-success"> Connexion </button>
-        </div>
-   </form>
-            <p id="centerText"><a href="{{path('forgotten_password')}}">(Mot de passe oublié)</a></p><br/>
-            <h6 id="centerText"> Pas encore de compte ? Inscrivez vous ! </h6>
-            <p id="centerText"><a href="{{path('security_registration')}}" class="btn btn-primary">Inscription</a></p><br/>
+    <div class="loginForm card bg-light border-dark mb-3">
+        <div class="card-body">
+                <form method="post">
+                    <div class="form-group">
+                        <label for="inputMail">Mail</label>
+                    <input type="text" value="{{ last_username }}" name="mail" id="inputMail" class="form-control" required autofocus>
+                    </div> 
+                <div class="form-group">   
+                    <label for="inputPassword">Mot de passe :</label>
+                    <input type="password" name="password" id="inputPassword" class="form-control" required>
+                </div>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <div  class="form-group">
+                    <button type="submit" class="btn btn-success"> Connexion </button>
+                </div>
+                </form>
+                <p><a href="{{path('forgotten_password')}}">(Mot de passe oublié)</a></p><br/>
+                <h6> Pas encore de compte ? Inscrivez vous ! </h6>
+                <p><a href="{{path('security_registration')}}" class="btn btn-primary">Inscription</a></p>
         </div>
     </div>
-</div>
+    <div class="spaceFooter">
+    </div>
 {% endblock %}

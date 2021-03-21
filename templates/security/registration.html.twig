@@ -1,39 +1,32 @@
 {% extends 'base.html.twig' %}
 {% form_theme formUser 'bootstrap_4_layout.html.twig' %}
-
 {% block title %}Inscription{% endblock %}
-
 {% block body %}
- <section id="space">
-  </section>
-    <section id="services" class="services">
-      <div class="container">
-           <div class="section-title" data-aos="fade-in" data-aos-delay="100">
-          <h2>Inscription</h2>
-        </div>
-    </section>
-    
-   
-
-<div id="centerText" class="col-lg-6">
-    <div id="centerText" class="form-row">
-        <div class="col-md-12 form-group">
-            {{ form_start(formUser) }}
-    {{ form_row(formUser.login, { 'label':'Login : ','attr': {'placeholder': "Votre login"}})}}
-    {{ form_row(formUser.mail, { 'label':'Mail : ','attr': {'placeholder': "Votre mail"}})}}
-    {{ form_row(formUser.password, { 'label':'Mot de passe : '})}}
-    {{ form_row(formUser.confirm_password, { 'label':'Confirmation du mot de passe : '})}}</br>
-    {{ form_row(formUser.image, {'label':'Avatar'})}}
-    <button type="submit"  class="btn btn-success">S'inscrire</button>
-    {{ form_end(formUser) }}
+    <div class="space">
+    </div>
+    <div id="services" class="services">
+        <div class="container">
+            <div class="section-title" data-aos="fade-in" data-aos-delay="100">
+            <h2>Inscription</h2>
+            </div>
         </div>
     </div>
-</div>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
- 
-   <script>
-      $("input[type=file]").change(function (e){$(this).next('.custom-file-label').text(e.target.files[0].name);})
-    </script>
+
+
+     <div class="formCreateAndShow card bg-light border-dark mb-3">
+        <div class="card-body">
+            <div class="col-md-12 form-group">
+            {{ form_start(formUser) }}
+            {{ form_row(formUser.login, { 'label':'Login : ','attr': {'placeholder': "Votre login"}})}}
+            {{ form_row(formUser.mail, { 'label':'Mail : ','attr': {'placeholder': "Votre mail"}})}}
+            {{ form_row(formUser.password, { 'label':'Mot de passe : '})}}
+            {{ form_row(formUser.confirm_password, { 'label':'Confirmation du mot de passe : '})}}</br>
+            {{ form_row(formUser.image, {'label':'Avatar'})}}
+            <button type="submit"  class="btn btn-success">S'inscrire</button>
+            {{ form_end(formUser) }}
+            </div>
+        </div>
+    </div>
+    <div class="spaceFooter">
+    </div> 
 {% endblock %}

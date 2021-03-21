@@ -1,129 +1,153 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Hello FigureController!{% endblock %}
-
+{% block title %}Voir la figure{% endblock %}
 {% block body %}
 
-<section id="spaceShowFigure">
-</section>
+    <div class="spaceShowFigure2">
+    </div>
    
-<section id="showFigure">
- {% if figure.images|length > 0 %} 
+    <div class="showFigure">  
+     <div class="section-title" data-aos="fade-in" data-aos-delay="100"> <h2> {{ figure.name }}</h2> </div>
+       
+        {% if figure.images|length > 0 %} 
         <div>
-                 <img src="{{ asset('/assets/uploads/' ~ figure.images[0].link) }}" alt="image" width="700">
+            <img class="imageShow" src="{{ asset('/assets/uploads/' ~ figure.images[0].link) }}" alt="image" >
         </div>
- {% else %}
+        {% else %}
         <div>
-        <img src="{{ '/images/snowboard-extreme-sports.jpeg'}}" alt="Mute" width="700"/>
+            <img class="imageShow"  src="{{ '/images/snowboard-extreme-sports.jpeg'}}" alt="Mute" />
         </div>
-{% endif %} 
+        {% endif %} 
+             <div class="hero-container" data-aos="fade-up">
+            {% if app.user %} 
+                <a class="logosUpdateDelete" href="{{ path('Figure_edit', {'slug': figure.slug}) }}">
+                <img src="{{ asset('images/crayon.png') }}" alt="modifier"/></a> 
+                <a class="logosUpdateDelete" onClick="return confirm('Voulez-vous vraiment supprimer ce post ?')" href="{{ path('figure_deleted', {'id': figure.id}) }}">  
+                <img src= "{{ asset('images/poubelle.jpg') }}" alt="supprimer"/></a> 
+            {% endif %} 
+        </div>
+    </div>
+    <div class="smallSpace">
+    </div>
 
-         <div class="hero-container" data-aos="fade-up">
-                {% if app.user %} 
-                        <a class="logosUpdateDelete" href="{{ path('Figure_edit', {'slug': figure.slug}) }}">
-                        <img src="{{ asset('images/crayon.png') }}" alt="modifier"/></a> 
-                    <a class="logosUpdateDelete" onClick="return confirm('Voulez-vous vraiment supprimer ce post ?')" href="{{ path('figure_deleted', {'id': figure.id}) }}">  
-                     <img src= "{{ asset('images/poubelle.jpg') }}" alt="supprimer"/></a> 
-                {% endif %} 
-           <div class="section-title" data-aos="fade-in" data-aos-delay="100"> <h2> {{ figure.name }}</h2> </div>
-        </div>
-  </section>
-  <section id="smallSpace">
-  </section>
-  <div id="centerText" class="col-lg-6">
-        <div id="centerText" class="form-row">
-                <div class="col-md-10 form-group">
-                <div class="cadreImage">  
-                 {% for image in figure.images %}
-                        <img class="tidyImage" src="{{ asset('/assets/uploads/' ~ image.link) }}" alt="image" >
-                 {% endfor %}
-                  </div>
-              
-                <div  class="cadreVideo"> 
-                {% for video in figure.videos %}
-                        <iframe  class="tidyVideo" src="{{video.link}}" frameborder="0" allowfullscreen></iframe>
-                {% endfor %}
-                </div>
-                </div>
-        </div>
- </div>
 
-   <section id="space">
-  </section>
-    <section id="services" class="services">
-      <div class="container">
-           <div class="section-title" data-aos="fade-in" data-aos-delay="100">
+
   
-  <p> Catégorie : {{ figure.tricksGroup.name }}</p> 
-    <p>  Crée le :   {{ figure.createdAt | date('d/m/Y') }} à {{figure.createdAt | date('H.i')}}<br/></p>
-             {% if figure.updatedAt  %}
-                 <p> Mis à jour le :  {{ figure.updatedAt | date('d/m/Y') }} à {{figure.updatedAt | date('H.i')}}<br/></p>
-             {% endif %} 
-      <p> Description :   {{ figure.description }}  </p><br/>
-<br/>
-
-
-        </div>
-    </section>
-    
-   
-<hr class="my-4">
-<div id="centerText" class="col-lg-6">
-    <div id="centerText" class="form-row">
-        <div class="col-md-10 form-group">
- 
-    {% if app.user %}
-{{ form_start(commentForm)}}
-{{ form_row(commentForm.content, {'label':false})}}
-<button type="submit" class="btn btn-success">Ajoutez un commentaire</button>
-{{ form_end(commentForm)}}
-{% else %}
-<h2> Pour ajouter un commentaire, connectez vous </h2>
-<a href="{{path('app_login')}}" class="btn btn-primary">Connexion</a>
-{% endif %}
-        </div> 
-    </div>
-</div>
-<hr class="my-4">
-<br/> 
-
-<div id="centerText" class="col-lg-6">
-    <div id="centerText" class="form-row">
-        <div class="col-md-12 form-group">
-<section id="commentaires">
-<h1> Commentaires : </h1> 
-<div class="col-12">
-        {% for comments in figure.comment %}
-                <div class="comment">
-                        <div class="row">
-          {% if comments.user.image %} 
-         <div  class="roundedImage"> <img class="widthAvatar" src="{{ asset('/assets/uploads/' ~ comments.user.image) }}" alt="image" ></div>
- {% else %}
-       <img  class="widthAvatar "src="{{'/images/avatar.png'}}" alt="Mute"/>
-{% endif %} 
-                               
-                                <div class="card border-dark mb-3" style="max-width: 20rem;">
-                                <div class="card-header"> {{comments.user}}  (<small>{{comments.createdAt | date('d/m/y')}} à {{comments.createdAt | date('H.i')}} )</small></div>
-                                <div class="card-body">
-                                <p class="card-text col">{{comments.content | raw}}</p>
-                                </div> 
-                                </div>
-                                                        
-                        </div> 
+        {% if figure.images is not empty %}
+        <div class="centerImage" class="col-lg-6">
+            <div class="centerText" class="form-row">
+                <div class="col-md-10 form-group imageCenter"> 
+                    <button id="togg1">Voir les images</button>
+                    <div id="d1">
+                        <div class="cadreImage">  
+                            {% for image in figure.images %}
+                                <img class="tidyImage" src="{{ asset('/assets/uploads/' ~ image.link) }}" alt="image" >
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
-        {% endfor %}
-</section>
- 
+            </div>
         </div>
-    </div>
-</div>
+        {% endif %}
+        {% if figure.videos is not empty %}
+        <div class="centerText" class="col-lg-6">
+            <div class="centerText" class="form-row">
+                <div class="col-md-10 form-group imageCenter"> 
+                    <button id="togg2">Voir les vidéos</button>
+                    <div id="d2">
+                        <div class="cadreVideo"> 
+                            {% for video in figure.videos %}
+                            <iframe  class="tidyVideo" src="{{video.link}}" frameborder="0" allowfullscreen></iframe>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <div class="space">
+        </div>
+        <div id="services" class="services">
+            <div class="container card bg-light border-dark mb-3">
+                <div class="section-title" data-aos="fade-in" data-aos-delay="100">
+                    <p> Catégorie : {{ figure.tricksGroup.name }}</p> 
+                    <p>  Crée le :   {{ figure.createdAt | date('d/m/Y') }} à {{figure.createdAt | date('H.i')}}<br/></p>
+                    {% if figure.updatedAt  %}
+                    <p> Mis à jour le :  {{ figure.updatedAt | date('d/m/Y') }} à {{figure.updatedAt | date('H.i')}}<br/></p>
+                    {% endif %} 
+                    <p> Description :   {{ figure.description }}  </p><br/>
+                    <br/>
+                </div>
+            </div>
+   
+        
+    
+        <hr class="my-4">
+            <div class="centerText" class="col-lg-6">
+                <div class="centerText" class="form-row">
+                    <div class="col-md-10 form-group">
+                        {% if app.user %}
+                        {{ form_start(commentForm)}}
+                        {{ form_row(commentForm.content, {'label':false})}}
+                        <button type="submit" class="btn btn-success">Ajoutez un commentaire</button>
+                        {{ form_end(commentForm)}}
+                        {% else %}
+                        <h2> Pour ajouter un commentaire, connectez vous </h2>
+                        <a href="{{path('app_login')}}" class="btn btn-primary">Connexion</a>
+                        {% endif %}
+                    </div> 
+                </div>
+            </div>
+        <hr class="my-4">
+        <br/> 
 
+        <div class="centerText" class="col-lg-6">
+            <div class="centerText" class="form-row">
+                <div class="col-md-12 form-group">
+                    <div class="commentaires">
+                    <h1> Commentaires : </h1> 
+                        {% for comments in comment %}
+                                <div class="col-12">
+                                    <div class="comment">
+                                        <div class="row">
+                                            {% if comments.user.image %} 
+                                                <div  class="roundedImage"> <img class="widthAvatar" src="{{ asset('/assets/uploads/' ~ comments.user.image) }}" alt="image" ></div>
+                                            {% else %}
+                                                <div  class="roundedImage"> <img  class="widthAvatar" src="{{'/images/avatar.png'}}" alt="Mute"/></div>
+                                            {% endif %} 
+                                            <div class="card border-dark mb-3" style="max-width: 20rem;">
+                                                <div class="card-header"> {{comments.user}}  (<small>{{comments.createdAt | date('d/m/y')}} à {{comments.createdAt | date('H.i')}} )</small></div>
+                                                <div class="card-body">
+                                                    <p class="card-text col">{{comments.content | raw}}</p>
+                                                </div> 
+                                            </div>                          
+                                        </div> 
+                                    </div>
+                                </div>
+                            {% endfor %}
 
-
-
-
-<br/><br/><br/>
-Ces messages doivent être paginés (10 par pages).
-
-</p>
+                            {% set pages = (total / limit)|round(0,'ceil') %}
+                            {% if pages %} 
+                            <ul class="pagination" id="pagination-flickr">
+                                <li  class="{{ (page == 1) ? 'page-item disabled' : '' }}">
+                                    <a href="{{ (page > 1) ? '?page=' ~ (page - 1) : '' }}">
+                                        <i>&laquo;</i>
+                                    </a>  
+                                </li>
+                                {% for item in 1.. pages %}
+                                <li class='{{ (page == item) ? 'page-item active' : '' }}'>
+                                    <a href="?page={{item}}">{{item}}</a>
+                                </li> 
+                                {% endfor %} 
+                                <li  class="{{ (page == pages ) ? 'page-item disabled' : '' }}">
+                                    <a href="{{ (page < pages) ? '?page=' ~ (page + 1) : '' }}">
+                                        <i>&raquo;</i>
+                                    </a>  
+                                </li> 
+                            </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>   
 {% endblock %}

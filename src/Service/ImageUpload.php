@@ -15,14 +15,14 @@ class ImageUpload
     }
 
     public function upload(UploadedFile $file)
-    {  
+    {
         $fileName =  md5(uniqid()) . '.' . $file->guessExtension();
-      
+
         $file->move(
             $this->parameterBag->get('images_directory'),
             $fileName
         );
-       
+
         return $fileName;
     }
 }

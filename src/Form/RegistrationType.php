@@ -23,40 +23,11 @@ class RegistrationType extends AbstractType
                 'label' => false,
                 'mapped' => false,
                 'required' => false,
-                //'label_attr' => ['class' => 'custom-file-label', 'type' => 'file'],
-                  'attr' => array('placeholder' => 'Selectionner un fichier','class' => 'custom-file-label', 'type' => 'file' ),
-                  'constraints' => [
-                     new File([
-                         'maxSize' => '1024k',
-                         'mimeTypes' => [
-                             'image/jpeg',
-                             'image/jpg',
-                             'image/png',
-
-                         ],
-            ])
-             ],
-              ]);
-            //   ->add('file', FileType::class, [
-            //     'required' => false,
-            //     'constraints' => [
-            //         new File([
-            //             'maxSize' => '1024k',
-            //             'mimeTypes' => [
-            //                 'image/jpeg',
-            //                 'image/jpg',
-            //                 'image/png',
-
-            //             ],
-            //         ])
-            //     ],
-            //     // 'label_attr' => ['class' => 'custom-file-label', 'type' => 'file'],
-            //     'attr' => array('placeholder' => 'Selectionner un fichier' ),
-            //     //  'label_attr' => [
-            //     //     'class' => 'custom-file-label'
-            //     // ]
-            // ]);
-      
+                'attr' => array('placeholder' => 'Selectionner un fichier', 'class' => 'custom-file-label', 'type' => 'file'),
+                'constraints' => [
+                    new File(['maxSize' => '1024k', 'mimeTypes' => ['image/jpeg', 'image/jpg', 'image/png',],])
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

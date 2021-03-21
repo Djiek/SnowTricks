@@ -79,7 +79,7 @@ class UserAuthentificatorAuthenticator extends AbstractFormLoginAuthenticator im
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']); //&& !($user->getToken())
     }
 
     /**
@@ -97,7 +97,7 @@ class UserAuthentificatorAuthenticator extends AbstractFormLoginAuthenticator im
         }
 
         // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
-     return new RedirectResponse($this->urlGenerator->generate('home'));
+        return new RedirectResponse($this->urlGenerator->generate('home'));
     }
 
     protected function getLoginUrl()

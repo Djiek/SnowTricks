@@ -8,6 +8,7 @@ use App\Form\RegistrationType;
 use App\Form\EditProfilType;
 use App\Repository\UserRepository;
 use App\Service\ImageUpload;
+use App\Service\Message;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +24,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/inscription", name="security_registration")
      */
-    public function registration(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer): Response
+    public function registration(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, Message $message, \Swift_Mailer $mailer): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationType::class, $user);
@@ -32,11 +33,8 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $imageFile = $form->get('image')->getData();
             if ($imageFile) {
-              $fileName =  md5(uniqid()) . '.' . $imageFile->guessExtension();
-        $imageFile->move(
-            $this->getParameter('images_directory'),
-            $fileName
-        );
+                $fileName =  md5(uniqid()) . '.' . $imageFile->guessExtension();
+                $imageFile->move($this->getParameter('images_directory'), $fileName);
             }
             $user->setimage($fileName);
             $hash = $encoder->encodePassword($user, $user->getPassword());
@@ -44,19 +42,8 @@ class SecurityController extends AbstractController
             $user->setToken(md5(uniqid()));
             $manager->persist($user);
             $manager->flush();
-
-            //envoie du mail
-            $message = (new \Swift_Message('Activation de votre compte'))
-                ->setFrom('justineDamory@gmail.com')
-                ->setTo($user->getMail())
-                ->setBody(
-                    $this->renderView(
-                        'security/activation.html.twig',
-                        ['token' => $user->getToken()]
-                    ),
-                    'text/html'
-                );
-            $mailer->send($message);
+            $createMessage = $message->createMessage($user);
+            $mailer->send($createMessage);
             $this->addFlash('success', 'Un email de confirmation vous a été envoyé. Pour activer votre compte, cliquez sur le lien dans le mail.');
             return $this->redirectToRoute('home');
         }
@@ -84,18 +71,15 @@ class SecurityController extends AbstractController
     /**
      * @Route("{id}/editProfil", name="editProfil")
      */
-    public function editProfil( User $user, Request $request, EntityManagerInterface $manager): Response
+    public function editProfil(User $user, Request $request, EntityManagerInterface $manager): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $userAuthentified = $this->getUser()->getId();
-
         if ($userAuthentified == $user->getId()) {
             $form = $this->createForm(EditProfilType::class, $user);
-
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $image = $form->get('image')->getData();
-                dd($image);
                 if (!empty($image)) {
                     if (!empty($user->getImage())) {
                         $name = $user->getImage();
@@ -129,7 +113,6 @@ class SecurityController extends AbstractController
     {
         $form = $this->createForm(ForgotPasswordType::class);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $user = $userRepo->findOneByMail($data['mail']);
@@ -137,9 +120,7 @@ class SecurityController extends AbstractController
                 $this->addFlash('warning', 'cette adresse n\'existe pas');
                 return  $this->redirectToRoute('forgotten_password');
             }
-
             $theToken = $token->generateToken();
-
             try {
                 $user->setResetToken($theToken);
                 $manager->persist($user);
@@ -148,7 +129,6 @@ class SecurityController extends AbstractController
                 $this->addFlash('warning', "une erreur est survenue");
                 return  $this->redirectToRoute('app_login');
             }
-
             $url = $this->generateUrl(
                 'app_reset_password',
                 ['token' => $theToken],
@@ -162,7 +142,6 @@ class SecurityController extends AbstractController
                     'text/html'
                 );
             $mailer->send($message);
-
             $this->addFlash('success', 'Un email de reinitialisation de mot de passe vous a été envoyé');
             return  $this->redirectToRoute('app_login');
         }
@@ -175,21 +154,16 @@ class SecurityController extends AbstractController
     public function resetPassword($token, Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $passwordEncoder)
     {
         $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['resetToken' => $token]);
-
         if (!$user) {
             $this->addFlash('warning', 'Token inconnu');
             return $this->redirectToRoute(('app_login'));
         }
-
         if ($request->isMethod('POST')) {
             $user->setResetToken(null);
-
             $user->setPassword($passwordEncoder->encodePassword($user, $request->get('password')));
             $manager->persist($user);
             $manager->flush();
-
             $this->addFlash('success', 'Votre mot de passe a été modifié.');
-
             return $this->redirectToRoute('app_login');
         } else {
             return $this->render('security/resetPassword.html.twig', ['token' => $token]);
@@ -199,20 +173,10 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login", name="app_login")
      */
-    public function login( AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
-
-      // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-
-       
-       
-
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 

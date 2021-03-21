@@ -76,7 +76,7 @@ class FigureFixtures extends Fixture
 
             $comment->setContent($faker->sentence())
                 ->setUser($users[array_rand($users)])
-                ->setCreatedAt($faker->dateTimeBetween( "-".$days.'days'))
+                ->setCreatedAt($faker->dateTimeBetween("-" . $days . 'days'))
                 ->setFigure($figures[array_rand($figures)]);
             $manager->persist($comment);
         }

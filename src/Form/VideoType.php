@@ -9,14 +9,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class VideoType extends AbstractType
 {
-public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('link');
-        
     }
 
-      public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Videos::class,

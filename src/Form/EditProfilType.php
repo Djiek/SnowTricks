@@ -16,13 +16,13 @@ class EditProfilType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('login',TextType::class)
+            ->add('login', TextType::class)
             ->add('mail')
             ->add('image', FileType::class, [
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
-                    new File ([
+                    new File([
                         'maxSize' => '1024k',
                         'mimeTypes' => [
                             'image/jpeg',
@@ -33,10 +33,8 @@ class EditProfilType extends AbstractType
                         'mimeTypesMessage' => 'Le format de l\'image n\'est pas valide.(png,jpeg et jpg accepté)',
                     ])
                 ],
-            ])
-         ;
+            ]);
     }
-
 
     public function configureOptions(OptionsResolver $resolver)
     {
