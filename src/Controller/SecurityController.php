@@ -7,14 +7,13 @@ use App\Form\ForgotPasswordType;
 use App\Form\RegistrationType;
 use App\Form\EditProfilType;
 use App\Repository\UserRepository;
-use App\Service\ImageUpload;
 use App\Service\Message;
+use App\Service\MessagePassword;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -86,30 +85,24 @@ class SecurityController extends AbstractController
                         unlink($this->getParameter('images_directory') . '/' . $name);
                     }
                     $file = md5(uniqid()) . '.' . $image->guessExtension();
-                    $image->move(
-                        $this->getParameter('images_directory'),
-                        $file
-                    );
+                    $image->move($this->getParameter('images_directory'),$file);
                     $user->setimage($file);
                 }
                 $manager->persist($user);
                 $manager->flush();
                 $this->addFlash('success', 'vos données ont bien été modifiées');
-                return  $this->redirectToRoute('home');
+                return $this->redirectToRoute('home');
             }
         } else {
-            return  $this->redirectToRoute('home');
+            return $this->redirectToRoute('home');
         }
-        return $this->render(
-            'security/editProfil.html.twig',
-            ['formUser' => $form->createView()]
-        );
+        return $this->render('security/editProfil.html.twig', ['formUser' => $form->createView()]);
     }
 
     /**
      * @Route("/mot-de-passe-oublie", name="forgotten_password")
      */
-    public function forgotPassword(Request $request, UserRepository $userRepo, \Swift_Mailer $mailer, TokenGeneratorInterface $token, EntityManagerInterface $manager)
+    public function forgotPassword(Request $request, UserRepository $userRepo, \Swift_Mailer $mailer,MessagePassword $messagePassword, TokenGeneratorInterface $token, EntityManagerInterface $manager)
     {
         $form = $this->createForm(ForgotPasswordType::class);
         $form->handleRequest($request);
@@ -129,18 +122,7 @@ class SecurityController extends AbstractController
                 $this->addFlash('warning', "une erreur est survenue");
                 return  $this->redirectToRoute('app_login');
             }
-            $url = $this->generateUrl(
-                'app_reset_password',
-                ['token' => $theToken],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            );
-            $message = (new \Swift_Message('Mot de passe oublié'))
-                ->setFrom('marine.djiek@gmail.com')
-                ->setTo($user->getMail())
-                ->setBody(
-                    "<p>Bonjour,</p><p> Une demande de réinitialisation de mot de passe a été effectuée pour le site SnowTricks. Veuillez cliquer sur ce lien pour reinitaliser votre mot de paasse. : " . $url . '</p>',
-                    'text/html'
-                );
+            $message = $messagePassword->createMessagePassword($user,$theToken);
             $mailer->send($message);
             $this->addFlash('success', 'Un email de reinitialisation de mot de passe vous a été envoyé');
             return  $this->redirectToRoute('app_login');

@@ -3,24 +3,20 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
-use App\Entity\Image;
 use App\Entity\Figure;
 use App\Entity\Images;
-use App\Entity\Videos;
 use App\Form\CommentType;
 use App\Form\FigureType;
-use App\Form\VideoType;
 use App\Repository\CommentRepository;
 use App\Repository\FigureRepository;
 use App\Service\ImageUpload;
-use App\Service\Slug;
+use App\Service\SendImageAndSlug;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\Expression;
 
 class FigureController extends AbstractController
 {
@@ -39,7 +35,6 @@ class FigureController extends AbstractController
         $limit = 9;
         $page = (int)$request->query->get("page", 1);
         $figures = $this->repo->pagination($page, $limit);
-
         $total = $this->repo->getTotalFigure();
 
         return $this->render('figure/index.html.twig', [
@@ -54,38 +49,16 @@ class FigureController extends AbstractController
      * @Route("/create", name="create")
      * @Route("/{slug}/edit", name="Figure_edit")
      */
-    public function form(Figure $figure = null, Request $request, EntityManagerInterface $manager, ImageUpload $imageUpload): Response
+    public function form(Figure $figure = null, Request $request, EntityManagerInterface $manager, SendImageAndSlug $sendImage, ImageUpload $imageUpload): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         if (!$figure) {
             $figure = new Figure();
-            $slug = new Slug();
         }
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $images = $form->get('images')->getData();
-            foreach ($images as $image) {
-                if (!$image->getLink()) {
-                    $fileName = $imageUpload->upload($image->getFile());
-                    $image->setLink($fileName);
-                    $figure->addImage($image);
-                }
-            }
-            if (!$figure->getId()) {
-                $figure->setCreatedAt(new \DateTime());
-                $slugName = $slug->createSlug($figure->getName());
-                $figure->setSlug($slugName);
-            } else {
-                $figure->setUpdatedAt(new \DateTime());
-                $lastSlug = $figure->getSlug();
-                $slug = new Slug();
-                $nameWithoutSlug = $slug->deleteSlug($lastSlug);
-                if ($figure->getName() != $nameWithoutSlug) {
-                    $slugName = $slug->createSlug($figure->getName());
-                    $figure->setSlug($slugName);
-                }
-            }
+            $sendImage->send($form, $imageUpload, $figure);
             $figure->setUser($this->getUser());
             if (!$figure->getId()) {
                 $message =  $this->addFlash('success', 'La figure a été enregistré en base de donnée avec succés.');
@@ -97,11 +70,7 @@ class FigureController extends AbstractController
             $message;
             return $this->redirectToRoute('home');
         }
-        return $this->render('figure/createFigure.html.twig', [
-            'figure' => $figure,
-            'formFigure' => $form->createView(),
-            'editMode' => $figure->getId() !== null
-        ]);
+        return $this->render('figure/createFigure.html.twig', ['figure' => $figure, 'formFigure' => $form->createView(), 'editMode' => $figure->getId() !== null]);
     }
 
     /**

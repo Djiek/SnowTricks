@@ -10,11 +10,11 @@
        
         {% if figure.images|length > 0 %} 
         <div>
-            <img class="imageShow" src="{{ asset('/assets/uploads/' ~ figure.images[0].link) }}" alt="image" >
+            <img class="showFigure" src="{{ asset('/assets/uploads/' ~ figure.images[0].link) }}" alt="image" >
         </div>
         {% else %}
         <div>
-            <img class="imageShow"  src="{{ '/images/snowboard-extreme-sports.jpeg'}}" alt="Mute" />
+            <img class="showFigure"  src="{{ '/images/snowboard-extreme-sports.jpeg'}}" alt="Mute" />
         </div>
         {% endif %} 
              <div class="hero-container" data-aos="fade-up">
@@ -26,14 +26,14 @@
             {% endif %} 
         </div>
     </div>
-    <div class="smallSpace">
+    <div class="space">
     </div>
 
 
 
   
         {% if figure.images is not empty %}
-        <div class="centerImage" class="col-lg-6">
+        <div class="space centerImage" class="col-lg-6">
             <div class="centerText" class="form-row">
                 <div class="col-md-10 form-group imageCenter"> 
                     <button id="togg1">Voir les images</button>
@@ -64,25 +64,21 @@
             </div>
         </div>
         {% endif %}
-        <div class="space">
-        </div>
-        <div id="services" class="services">
-            <div class="container card bg-light border-dark mb-3">
-                <div class="section-title" data-aos="fade-in" data-aos-delay="100">
+        <div>
+                <div class="section-title" data-aos="fade-in" data-aos-delay="100"><br/>
                     <p> Catégorie : {{ figure.tricksGroup.name }}</p> 
-                    <p>  Crée le :   {{ figure.createdAt | date('d/m/Y') }} à {{figure.createdAt | date('H.i')}}<br/></p>
+                    <p>  Crée le :   {{ figure.createdAt | date('d/m/Y') }} à {{figure.createdAt | date('H.i')}}
                     {% if figure.updatedAt  %}
-                    <p> Mis à jour le :  {{ figure.updatedAt | date('d/m/Y') }} à {{figure.updatedAt | date('H.i')}}<br/></p>
-                    {% endif %} 
+                     . Mis à jour le :  {{ figure.updatedAt | date('d/m/Y') }} à {{figure.updatedAt | date('H.i')}}<br/><br/></p>
+                    {% endif %} <br/>
                     <p> Description :   {{ figure.description }}  </p><br/>
-                    <br/>
                 </div>
-            </div>
+        </div>
    
         
     
         <hr class="my-4">
-            <div class="centerText" class="col-lg-6">
+            <div class="centerComment" class="col-lg-6">
                 <div class="centerText" class="form-row">
                     <div class="col-md-10 form-group">
                         {% if app.user %}
@@ -142,12 +138,13 @@
                                     <a href="{{ (page < pages) ? '?page=' ~ (page + 1) : '' }}">
                                         <i>&raquo;</i>
                                     </a>  
-                                </li> 
-                            </ul>
+                                </li>
+                            </ul>  
                             {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
         </div>   
+       
 {% endblock %}

@@ -56,7 +56,8 @@ class Figure
     private $images;
 
     /**
-     * @ORM\OneToMany(targetEntity=Videos::class, mappedBy="figure", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Videos::class, mappedBy="figure", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $videos;
 
