@@ -106,9 +106,9 @@
                                     <div class="comment">
                                         <div class="row">
                                             {% if comments.user.image %} 
-                                                <div  class="roundedImage"> <img class="widthAvatar" src="{{ asset('/assets/uploads/' ~ comments.user.image) }}" alt="image" ></div>
+                                                <div  class="roundedImage2"> <img class="widthAvatar" src="{{ asset('/assets/uploads/' ~ comments.user.image) }}" alt="image" ></div>
                                             {% else %}
-                                                <div  class="roundedImage"> <img  class="widthAvatar" src="{{'/images/avatar.png'}}" alt="Mute"/></div>
+                                                <div  class="roundedImage2"> <img  class="widthAvatar" src="{{'/images/avatar.png'}}" alt="Mute"/></div>
                                             {% endif %} 
                                             <div class="card border-dark mb-3" style="max-width: 20rem;">
                                                 <div class="card-header"> {{comments.user}}  (<small>{{comments.createdAt | date('d/m/y')}} à {{comments.createdAt | date('H.i')}} )</small></div>

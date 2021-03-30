@@ -1,6 +1,9 @@
 # SnowTricks
 SnowTricks is a community site for learning snowboard tricks.
 ***
+* [![Maintainability](https://api.codeclimate.com/v1/badges/ced261c97cadbf5068ac/maintainability)]
+(https://codeclimate.com/github/Djiek/SnowTricks/maintainability)
+***
 ## Technologies
 ***
 A list of technologies used within the project:
