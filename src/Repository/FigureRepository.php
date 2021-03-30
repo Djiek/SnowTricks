@@ -19,22 +19,32 @@ class FigureRepository extends ServiceEntityRepository
         parent::__construct($registry, Figure::class);
     }
 
-    // /**
-    //  * @return Figure[] Returns an array of Figure objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @returns all figure per page
+     * @retrun void
+     */
+    public function pagination($page, $limit)
     {
         return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('f.id', 'ASC')
-            ->setMaxResults(10)
+            ->setFirstResult(($page * $limit) - $limit)
+            ->orderBy('f.createdAt', 'DESC')
+            ->setMaxResults($limit)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
+
+    /**
+     * @returns all figure per page
+     * @retrun void
+     */
+    public function getTotalFigure()
+    {
+        return $this->createQueryBuilder('f')
+            ->select('COUNT(f)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
 
     /*
     public function findOneBySomeField($value): ?Figure

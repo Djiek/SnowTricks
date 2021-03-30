@@ -19,12 +19,14 @@ class Images
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=500, nullable=false)
+     * @ORM\Column(type="string", length=500, nullable=true)
      */
     private $link;
 
+    private $file;
+
     /**
-     * @ORM\ManyToOne(targetEntity=Figure::class, inversedBy="images",cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=Figure::class, inversedBy="images")
      * @JoinColumn(onDelete="CASCADE")
      */
     private $figure;
@@ -45,6 +47,19 @@ class Images
 
         return $this;
     }
+
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function setFile($file): self
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
 
     public function getFigure(): ?Figure
     {

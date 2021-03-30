@@ -39,7 +39,7 @@ class User implements UserInterface
 
     /**
      *@Assert\EqualTo(propertyPath="password", message="Les mots de passe ne sont pas identique")
-    */
+     */
     public $confirm_password;
 
     /**
@@ -68,11 +68,36 @@ class User implements UserInterface
      */
     private $image;
 
+    // /**
+    //  * @Assert\File(
+    //  * maxSize = "120k",
+    //  * mimeTypes = {"image/jpeg", "image/png", "image/jpg"},
+    //  * mimeTypesMessage = "Ce fichier doit être une image au format jpeg,jpg ou png")
+    //  */
+    private $file;
+
+    /**
+     * @ORM\Column(type="string", length=500, nullable=true)
+     */
+    private $resetToken;
+
     public function __construct()
     {
         $this->figures = new ArrayCollection();
         $this->comment = new ArrayCollection();
     }
+
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    public function setFile($file): self
+    {
+        $this->file = $file;
+        return $this;
+    }
+
 
     public function getId(): ?int
     {
@@ -87,7 +112,6 @@ class User implements UserInterface
     public function setLogin(string $login): self
     {
         $this->login = $login;
-
         return $this;
     }
 
@@ -99,7 +123,6 @@ class User implements UserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
-
         return $this;
     }
 
@@ -111,7 +134,6 @@ class User implements UserInterface
     public function setMail(string $mail): self
     {
         $this->mail = $mail;
-
         return $this;
     }
 
@@ -123,7 +145,6 @@ class User implements UserInterface
     public function setToken(?string $token): self
     {
         $this->token = $token;
-
         return $this;
     }
 
@@ -141,7 +162,6 @@ class User implements UserInterface
             $this->figures[] = $figure;
             $figure->setUser($this);
         }
-
         return $this;
     }
 
@@ -153,7 +173,6 @@ class User implements UserInterface
                 $figure->setUser(null);
             }
         }
-
         return $this;
     }
 
@@ -171,7 +190,6 @@ class User implements UserInterface
             $this->comment[] = $comment;
             $comment->setUser($this);
         }
-
         return $this;
     }
 
@@ -183,35 +201,49 @@ class User implements UserInterface
                 $comment->setUser(null);
             }
         }
-
         return $this;
     }
 
-    public function eraseCredentials(){}
+    public function eraseCredentials()
+    {
+    }
 
-    public function getSalt(){}
+    public function getSalt()
+    {
+    }
 
-    public function getRoles() {
+    public function getRoles()
+    {
         return ['ROLE_USER'];
     }
-     public function getUserName(): ?string
+    public function getUserName(): ?string
     {
         return $this->login;
     }
-       public function __toString()
+    public function __toString()
     {
         return $this->login;
     }
 
-       public function getImage(): ?string
-       {
-           return $this->image;
-       }
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
 
-       public function setImage(?string $image): self
-       {
-           $this->image = $image;
+    public function setImage(?string $image): self
+    {
+        $this->image = $image;
+        return $this;
+    }
 
-           return $this;
-       }
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): self
+    {
+        $this->resetToken = $resetToken;
+        return $this;
+    }
 }

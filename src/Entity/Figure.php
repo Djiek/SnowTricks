@@ -64,6 +64,7 @@ class Figure
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="figure", orphanRemoval=true, cascade={"persist", "remove"})
      * @ORM\JoinColumn(onDelete="CASCADE")
+     * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     private $comment;
 
@@ -72,6 +73,11 @@ class Figure
      * @ORM\JoinColumn(nullable=false)
      */
     private $tricksGroup;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
 
     public function __construct()
     {
@@ -243,6 +249,18 @@ class Figure
     public function setTricksGroup(?tricksGroup $tricksGroup): self
     {
         $this->tricksGroup = $tricksGroup;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }
