@@ -50,14 +50,9 @@
     margin: auto;
 }
 
-.imageCenter {
-    text-align: center;
-    margin: auto;
-}
-
 .comment {
     text-align: center;
-    font-size: 165%;
+    font-size: 120%;
     margin-left: auto;
     margin-right: auto;
     width: 10em;
@@ -93,11 +88,6 @@
     #footer {
         display: none;
     }
-    /* .menuCenter { */
-    /* height: 100px; */
-    /* display: flex; */
-    /* justify-content: center; */
-    /* } */
     .logoImage {
         width: 50px;
         height: 50px;
@@ -109,6 +99,11 @@
     margin: 0 auto;
 }
 
+.imageCenter {
+    text-align: center;
+    margin: auto;
+}
+
 .centerImage {
     margin: 0 auto;
     width: 100px;
@@ -116,14 +111,30 @@
 
 .cadreImage {
     display: flex;
+    margin: 0 auto;
 }
 
-.cadreVideo {
-    display: flex;
+.galeryImage {
+    justify-content: center;
+    max-width: 300px;
+    max-height: 300px;
+    padding: 10px;
 }
+
+
+/* .cadreVideo {
+    display: flex;
+} */
 
 .bordureImage {
     border: 2px solid black;
+}
+
+.galeryVideo {
+    max-width: 300px;
+    max-height: 500px;
+    padding: 10px;
+    margin: 0 auto;
 }
 
 .bordureVideo {
@@ -142,6 +153,21 @@
 }
 
 @media (max-width: 999px) {
+    .spaceSmartphone {
+        padding: 50px;
+    }
+    .galeryImage {
+        justify-content: center;
+        max-width: 250px;
+        max-height: 2500px;
+        padding: 5px;
+    }
+    .galeryVideo {
+        max-width: 250px;
+        max-height: 450px;
+        padding: 5px;
+        margin: 0 auto;
+    }
     .roundedImage {
         margin: auto;
     }

@@ -32,6 +32,9 @@ To install the project :
 * Update your mailer_url : ex : MAILER_URL=gmail://name@gmail.com:password@localhost?encryption=tls&auth_mode=oauth
 ```
 $ composer install
+$ php bin/console doctrine:database:create 
+$ php bin/console make:migration
 $ php bin/console doctrine:migrations:migrate
+$ php bin/console doctrine:fixtures:load  
 $ php bin/console server:run
 ```

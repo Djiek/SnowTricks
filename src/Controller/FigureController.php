@@ -55,10 +55,12 @@ class FigureController extends AbstractController
         if (!$figure) {
             $figure = new Figure();
         }
+       
+        $images = $figure->getImages()->toArray();
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $sendImage->send($form, $imageUpload, $figure);
+            $sendImage->send($form, $imageUpload, $figure,$manager,$images);
             $figure->setUser($this->getUser());
             if (!$figure->getId()) {
                 $message =  $this->addFlash('success', 'La figure a été enregistré en base de donnée avec succés.');
@@ -79,7 +81,7 @@ class FigureController extends AbstractController
     public function show(CommentRepository $repoComment, Figure $figure, Request $request, EntityManagerInterface $manager): Response
     {
         $comment = new Comment();
-        $limit = 3;
+        $limit = 10;
         $page = (int)$request->query->get("page", 1);
         $comments = $repoComment->pagination($page, $limit, $figure->getId());
         $total = $repoComment->getTotalComment($figure->getId());
