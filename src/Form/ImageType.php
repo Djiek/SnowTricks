@@ -29,7 +29,6 @@ class ImageType extends AbstractType
                         'mimeTypesMessage' => 'Le format de l\'image n\'est pas valide.(png,jpeg et jpg accepté)',
                     ])
                 ],
-                //  'label_attr' => ['class' => 'custom-file-label', 'type' => 'file'],
                 'attr' => array('placeholder' => 'Selectionner un fichier'),
             ]);
     }

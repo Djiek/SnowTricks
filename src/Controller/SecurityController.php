@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\ForgotPasswordType;
 use App\Form\RegistrationType;
 use App\Form\EditProfilType;
+use App\Form\ResetPasswordType;
 use App\Repository\UserRepository;
 use App\Service\Message;
 use App\Service\MessagePassword;
@@ -85,7 +86,7 @@ class SecurityController extends AbstractController
                         unlink($this->getParameter('images_directory') . '/' . $name);
                     }
                     $file = md5(uniqid()) . '.' . $image->guessExtension();
-                    $image->move($this->getParameter('images_directory'),$file);
+                    $image->move($this->getParameter('images_directory'), $file);
                     $user->setimage($file);
                 }
                 $manager->persist($user);
@@ -102,7 +103,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/mot-de-passe-oublie", name="forgotten_password")
      */
-    public function forgotPassword(Request $request, UserRepository $userRepo, \Swift_Mailer $mailer,MessagePassword $messagePassword, TokenGeneratorInterface $token, EntityManagerInterface $manager)
+    public function forgotPassword(Request $request, UserRepository $userRepo, \Swift_Mailer $mailer, MessagePassword $messagePassword, TokenGeneratorInterface $token, EntityManagerInterface $manager)
     {
         $form = $this->createForm(ForgotPasswordType::class);
         $form->handleRequest($request);
@@ -122,7 +123,7 @@ class SecurityController extends AbstractController
                 $this->addFlash('warning', "une erreur est survenue");
                 return  $this->redirectToRoute('app_login');
             }
-            $message = $messagePassword->createMessagePassword($user,$theToken);
+            $message = $messagePassword->createMessagePassword($user, $theToken);
             $mailer->send($message);
             $this->addFlash('success', 'Un email de reinitialisation de mot de passe vous a été envoyé');
             return  $this->redirectToRoute('app_login');
@@ -140,15 +141,21 @@ class SecurityController extends AbstractController
             $this->addFlash('warning', 'Token inconnu');
             return $this->redirectToRoute(('app_login'));
         }
-        if ($request->isMethod('POST')) {
+        $form = $this->createForm(ResetPasswordType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $password = $form->get('password')->getData();
             $user->setResetToken(null);
-            $user->setPassword($passwordEncoder->encodePassword($user, $request->get('password')));
+            $user->setPassword($passwordEncoder->encodePassword($user,$password));
             $manager->persist($user);
             $manager->flush();
             $this->addFlash('success', 'Votre mot de passe a été modifié.');
             return $this->redirectToRoute('app_login');
         } else {
-            return $this->render('security/resetPassword.html.twig', ['token' => $token]);
+            return $this->render(
+                'security/resetPassword.html.twig',
+                ['token' => $token, 'formUser' => $form->createView()]
+            );
         }
     }
 
