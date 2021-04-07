@@ -59,6 +59,7 @@
 
     <div>
         {% set pages = (total / limit)|round(0,'ceil') %}
+         {% if pages %} 
         <ul class="pagination" id="pagination-flickr">
             <li  class="{{ (page == 1) ? 'page-item disabled' : '' }}">
                 <a href="{{ (page > 1) ? '?page=' ~ (page - 1) : '' }}">
@@ -77,6 +78,7 @@
                     </a>  
                 </li> 
         </ul>
+           {% endif %}
     </div>
 </div>
 <br/>
