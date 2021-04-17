@@ -1,13 +1,10 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Connexion{% endblock %}
+{% block title %} Connexion {% endblock %}
 
 {% block body %}
-    <div class="space">
-    </div>   
+    <div class="space"></div>   
     <section id="services" class="services">
         <div class="container">
-     
             <div class="section-title" data-aos="fade-in" data-aos-delay="100">
                 <h2>Connexion</h2>
             </div>
@@ -33,11 +30,10 @@
                     <button type="submit" class="btn btn-success"> Connexion </button>
                 </div>
                 </form>
-                <p><a href="{{path('forgotten_password')}}">(Mot de passe oublié)</a></p><br/>
+                <p><a href="{{ path('forgotten_password') }}">(Mot de passe oublié)</a></p><br/>
                 <h6> Pas encore de compte ? Inscrivez vous ! </h6>
-                <p><a href="{{path('security_registration')}}" class="btn btn-primary">Inscription</a></p>
+                <p><a href="{{ path('security_registration') }}" class="btn btn-primary">Inscription</a></p>
         </div>
     </div>
-    <div class="spaceFooter">
-    </div>
+    <div class="spaceFooter"></div>
 {% endblock %}

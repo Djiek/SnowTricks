@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
-{% block title %}Accueil{% endblock %}
+{% block title %} Accueil {% endblock %}
 {% block body %}
 
-     
   <!-- ======= Hero Section ======= -->
     <div id="hero">
-        <div> {% for message in app.flashes('success') %}
-            <div class="alert alert-success">
-                {{ message }}
-            </div>
-        {% endfor %}
+        <div> 
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
         </div>
         <div class="hero-container" data-aos="fade-up">
             <h1>Bienvenue sur SnowTricks ! </h1>
@@ -18,7 +18,7 @@
         </div>
     </div><!-- End Hero -->
 
-    <div  class="services">
+    <div class="services">
         <div id="main">
             <!-- ======= Figure ======= -->
             <div id="about" class="about">
@@ -59,9 +59,9 @@
 
     <div>
         {% set pages = (total / limit)|round(0,'ceil') %}
-         {% if pages %} 
+        {% if pages %} 
         <ul class="pagination" id="pagination-flickr">
-            <li  class="{{ (page == 1) ? 'page-item disabled' : '' }}">
+            <li class="{{ (page == 1) ? 'page-item disabled' : '' }}">
                 <a href="{{ (page > 1) ? '?page=' ~ (page - 1) : '' }}">
                     <i>&laquo;</i>
                 </a>  
@@ -80,6 +80,5 @@
         </ul>
            {% endif %}
     </div>
-</div>
-<br/>
+</div><br/>
 {% endblock %}

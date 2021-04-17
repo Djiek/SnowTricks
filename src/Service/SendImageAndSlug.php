@@ -13,7 +13,7 @@ class SendImageAndSlug
     {
         $this->parameterBag = $parameterBag;
     }
-    public function send($form, $imageUpload, $figure, $manager,$oldImages)
+    public function send($form, $imageUpload, $figure, $manager, $oldImages)
     {
         $images = $form->get('images')->getData();
         foreach ($images as $image) {
@@ -22,7 +22,7 @@ class SendImageAndSlug
                 $image->setLink($fileName);
                 $figure->addImage($image);
                 $oldImages[] = $image;
-            }   
+            }
         }
         if (!$figure->getId()) {
             $figure->setCreatedAt(new \DateTime());
@@ -40,7 +40,7 @@ class SendImageAndSlug
             }
         }
         foreach ($oldImages as $key => $value) {
-            if (!in_array($value,$figure->getImages()->toArray())) {
+            if (!in_array($value, $figure->getImages()->toArray())) {
                 $name = $value->getLink();
                 unlink($this->parameterBag->get('images_directory') . '/' . $name);
                 $manager->remove($value);

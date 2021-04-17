@@ -28,12 +28,11 @@ To install the project :
 
 * To download the project, please clone the github project with the repository link :
 ```$ git clone https://github.com/Djiek/SnowTricks```
-* Update your BDD credentials in SnowTricks\app\.env
+* Update your BDD credentials in SnowTricks .env
 * Update your mailer_url : ex : MAILER_URL=gmail://name@gmail.com:password@localhost?encryption=tls&auth_mode=oauth
 ```
 $ composer install
 $ php bin/console doctrine:database:create 
-$ php bin/console make:migration
 $ php bin/console doctrine:migrations:migrate
 $ php bin/console doctrine:fixtures:load  
 $ php bin/console server:run

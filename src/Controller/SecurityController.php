@@ -24,8 +24,13 @@ class SecurityController extends AbstractController
     /**
      * @Route("/inscription", name="security_registration")
      */
-    public function registration(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder, Message $message, \Swift_Mailer $mailer): Response
-    {
+    public function registration(
+        Request $request,
+        EntityManagerInterface $manager,
+        UserPasswordEncoderInterface $encoder,
+        Message $message,
+        \Swift_Mailer $mailer
+    ): Response {
         $user = new User();
         $form = $this->createForm(RegistrationType::class, $user);
         $form->handleRequest($request);
@@ -44,7 +49,8 @@ class SecurityController extends AbstractController
             $manager->flush();
             $createMessage = $message->createMessage($user);
             $mailer->send($createMessage);
-            $this->addFlash('success', 'Un email de confirmation vous a été envoyé. Pour activer votre compte, cliquez sur le lien dans le mail.');
+            $this->addFlash('success', 'Un email de confirmation vous a été envoyé.
+             Pour activer votre compte, cliquez sur le lien dans le mail.');
             return $this->redirectToRoute('home');
         }
         return $this->render('security/registration.html.twig', [
@@ -103,8 +109,14 @@ class SecurityController extends AbstractController
     /**
      * @Route("/mot-de-passe-oublie", name="forgotten_password")
      */
-    public function forgotPassword(Request $request, UserRepository $userRepo, \Swift_Mailer $mailer, MessagePassword $messagePassword, TokenGeneratorInterface $token, EntityManagerInterface $manager)
-    {
+    public function forgotPassword(
+        Request $request,
+        UserRepository $userRepo,
+        \Swift_Mailer $mailer,
+        MessagePassword $messagePassword,
+        TokenGeneratorInterface $token,
+        EntityManagerInterface $manager
+    ) {
         $form = $this->createForm(ForgotPasswordType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -134,8 +146,12 @@ class SecurityController extends AbstractController
     /**
      * @Route("/reset_password/{token}",name="app_reset_password")
      */
-    public function resetPassword($token, Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $passwordEncoder)
-    {
+    public function resetPassword(
+        $token,
+        Request $request,
+        EntityManagerInterface $manager,
+        UserPasswordEncoderInterface $passwordEncoder
+    ) {
         $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['resetToken' => $token]);
         if (!$user) {
             $this->addFlash('warning', 'Token inconnu');
@@ -146,7 +162,7 @@ class SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $password = $form->get('password')->getData();
             $user->setResetToken(null);
-            $user->setPassword($passwordEncoder->encodePassword($user,$password));
+            $user->setPassword($passwordEncoder->encodePassword($user, $password));
             $manager->persist($user);
             $manager->flush();
             $this->addFlash('success', 'Votre mot de passe a été modifié.');
@@ -174,6 +190,7 @@ class SecurityController extends AbstractController
      */
     public function logout()
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        throw new \LogicException('This method can be blank - 
+        it will be intercepted by the logout key on your firewall.');
     }
 }

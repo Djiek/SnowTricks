@@ -1,13 +1,10 @@
 {% extends 'base.html.twig' %}
-
 {% form_theme formFigure 'bootstrap_4_layout.html.twig' %}
-
-{% block title %}Ajouter une figure{% endblock %}
-
+{% block title %} Ajouter une figure {% endblock %}
 {% block body %}
 
     <div class="spaceShowFigure"></div>
-     <section class="showFigure"> 
+    <section class="showFigure"> 
         <img class="imageSnowboard"  src= "{{ asset('images/snowboard-extreme-sports.jpeg') }}" alt="supprimer" />
             <div class="hero-container" data-aos="fade-up">
                 <div class="container">
@@ -26,15 +23,14 @@
     <div class="formCreateAndShow card bg-light border-dark mb-3">
         <div class="card-body">
             {{ form_start(formFigure) }}
-            {{ form_row(formFigure.name, { 'require':'true','label':'Nom de la figure : '})}}
-            {{ form_row(formFigure.description, { 'require':'true', 'label':'Description : '})}}
-            {{ form_row(formFigure.tricksGroup, { 'require':'true', 'label':'Niveau : '})}}
-            <div class="bordureVideo"> {{ form_row(formFigure.images, {'label':'Image(s) '} )}}  
+            {{ form_row(formFigure.name, { 'require':'true','label':'Nom de la figure : '}) }}
+            {{ form_row(formFigure.description, { 'require':'true', 'label':'Description : '}) }}
+            {{ form_row(formFigure.tricksGroup, { 'require':'true', 'label':'Niveau : '}) }}
+            <div class="bordureVideo"> {{ form_row(formFigure.images, {'label':'Image(s) '} ) }}  
                 <small>(La première image choisi sera affichée en photo de couverture.)</small>  
-            </div>    
-            <br/>
+            </div><br/>
             <div class="bordureVideo"><br/> <h6> Video(s) </h6 >
-                <small>(Pour le lien video youtube, veuillez aller dans "partager" puis "integer la video" et copier le lien de la video. [Ex : https://www.youtube.com/embed/5mtNg2mf-Hg] )</small>  {{ form_row(formFigure.videos, {'label':false})}} 
+                <small>(Pour le lien video youtube, veuillez aller dans "partager" puis "integer la video" et copier le lien de la video. [Ex : https://www.youtube.com/embed/5mtNg2mf-Hg] )</small>  {{ form_row(formFigure.videos, {'label':false}) }} 
             </div>
             <br/>
 

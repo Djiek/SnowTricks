@@ -49,18 +49,23 @@ class FigureController extends AbstractController
      * @Route("/create", name="create")
      * @Route("/{slug}/edit", name="Figure_edit")
      */
-    public function form(Figure $figure = null, Request $request, EntityManagerInterface $manager, SendImageAndSlug $sendImage, ImageUpload $imageUpload): Response
-    {
+    public function form(
+        Figure $figure = null,
+        Request $request,
+        EntityManagerInterface $manager,
+        SendImageAndSlug $sendImage,
+        ImageUpload $imageUpload
+    ): Response {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         if (!$figure) {
             $figure = new Figure();
         }
-       
+
         $images = $figure->getImages()->toArray();
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $sendImage->send($form, $imageUpload, $figure,$manager,$images);
+            $sendImage->send($form, $imageUpload, $figure, $manager, $images);
             $figure->setUser($this->getUser());
             if (!$figure->getId()) {
                 $message =  $this->addFlash('success', 'La figure a été enregistré en base de donnée avec succés.');
@@ -72,14 +77,21 @@ class FigureController extends AbstractController
             $message;
             return $this->redirectToRoute('home');
         }
-        return $this->render('figure/createFigure.html.twig', ['figure' => $figure, 'formFigure' => $form->createView(), 'editMode' => $figure->getId() !== null]);
+        return $this->render(
+            'figure/createFigure.html.twig',
+            ['figure' => $figure, 'formFigure' => $form->createView(), 'editMode' => $figure->getId() !== null]
+        );
     }
 
     /**
      * @Route("/show/{slug}", name="trick_show")
      */
-    public function show(CommentRepository $repoComment, Figure $figure, Request $request, EntityManagerInterface $manager): Response
-    {
+    public function show(
+        CommentRepository $repoComment,
+        Figure $figure,
+        Request $request,
+        EntityManagerInterface $manager
+    ): Response {
         $comment = new Comment();
         $limit = 10;
         $page = (int)$request->query->get("page", 1);
@@ -93,6 +105,7 @@ class FigureController extends AbstractController
             $comment->setUser($this->getUser());
             $manager->persist($comment);
             $manager->flush();
+            $this->addFlash('success', 'Le commentaire a été enregistré en base de donnée avec succés.');
             return $this->redirectToRoute('trick_show', ['slug' => $figure->getSlug()]);
         }
         return $this->render('figure/showFigure.html.twig', [
@@ -112,6 +125,10 @@ class FigureController extends AbstractController
     public function delete(Figure $figure, EntityManagerInterface $manager): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        foreach ($figure->getImages() as $image) {
+            $name = $image->getLink();
+            unlink($this->getParameter('images_directory') . '/' . $name);
+        }
         $manager->remove($figure);
         $manager->flush();
         return $this->redirectToRoute('home');
