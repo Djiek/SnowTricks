@@ -23,7 +23,9 @@ class RegistrationType extends AbstractType
                 'label' => false,
                 'mapped' => false,
                 'required' => false,
-                'attr' => array('placeholder' => 'Selectionner un fichier', 'class' => 'custom-file-label', 'type' => 'file'),
+                'attr' => array('placeholder' => 'Selectionner un fichier',
+                'class' => 'custom-file-label',
+                'type' => 'file'),
                 'constraints' => [
                     new File(['maxSize' => '1024k', 'mimeTypes' => ['image/jpeg', 'image/jpg', 'image/png',],])
                 ],

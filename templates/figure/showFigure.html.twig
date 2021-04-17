@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
-{% block title %}Voir la figure{% endblock %}
+{% block title %} Voir la figure {% endblock %}
 {% block body %}
 
     <div class="spaceShowFigure2">
     </div>
    
     <div class="showFigure">  
-     <div class="section-title" data-aos="fade-in" data-aos-delay="100"> <h2> {{ figure.name }}</h2> </div>
+    <div class="section-title" data-aos="fade-in" data-aos-delay="100"> <h2> {{ figure.name }}</h2> </div>
        
         {% if figure.images|length > 0 %} 
         <div>
@@ -20,9 +20,11 @@
              <div class="hero-container" data-aos="fade-up">
             {% if app.user %} 
                 <a class="logosUpdateDelete" href="{{ path('Figure_edit', {'slug': figure.slug}) }}">
-                <img src="{{ asset('images/crayon.png') }}" alt="modifier"/></a> 
+                    <img src="{{ asset('images/crayon.png') }}" alt="modifier"/>
+                </a> 
                 <a class="logosUpdateDelete" onClick="return confirm('Voulez-vous vraiment supprimer ce post ?')" href="{{ path('figure_deleted', {'id': figure.id}) }}">  
-                <img src= "{{ asset('images/poubelle.jpg') }}" alt="supprimer"/></a> 
+                    <img src= "{{ asset('images/poubelle.jpg') }}" alt="supprimer"/>
+                </a> 
             {% endif %} 
         </div>
     </div>
@@ -54,7 +56,7 @@
                     <div id="d2">
                         <div class="cadreVideo"> 
                             {% for video in figure.videos %}
-                                <iframe  class="galeryVideo" src="{{video.link}}" frameborder="0" allowfullscreen></iframe>
+                                <iframe class="galeryVideo" src="{{ video.link }}" frameborder="0" allowfullscreen></iframe>
                             {% endfor %}
                         </div>
                     </div>
@@ -66,9 +68,9 @@
     <div>
         <div class="section-title" data-aos="fade-in" data-aos-delay="100"><br/>
             <p> Catégorie : {{ figure.tricksGroup.name }}</p> 
-            <p>  Crée le :   {{ figure.createdAt | date('d/m/Y') }} à {{figure.createdAt | date('H.i')}}
+            <p>  Crée le :   {{ figure.createdAt | date('d/m/Y') }} à {{ figure.createdAt | date('H.i') }}
                 {% if figure.updatedAt  %}
-                    . Mis à jour le :  {{ figure.updatedAt | date('d/m/Y') }} à {{figure.updatedAt | date('H.i')}}<br/><br/></p>
+                    . Mis à jour le :  {{ figure.updatedAt | date('d/m/Y') }} à {{ figure.updatedAt | date('H.i') }}<br/><br/></p>
                 {% endif %} <br/>
             <p> Description :   {{ figure.description }}  </p><br/>
         </div>
@@ -79,10 +81,10 @@
             <div class="centerText" class="form-row">
                 <div class="col-md-10 form-group">
                     {% if app.user %}
-                    {{ form_start(commentForm)}}
-                    {{ form_row(commentForm.content, {'label':false})}}
+                    {{ form_start(commentForm) }}
+                    {{ form_row(commentForm.content, {'label':false}) }}
                     <button type="submit" class="btn btn-success">Ajoutez un commentaire</button>
-                    {{ form_end(commentForm)}}
+                    {{ form_end(commentForm) }}
                     {% else %}
                     <h2> Pour ajouter un commentaire, connectez vous </h2>
                     <a href="{{path('app_login')}}" class="btn btn-primary">Connexion</a>
@@ -97,46 +99,46 @@
         <div class="centerText" class="form-row">
             <div class="col-md-12 form-group">
                 <div class="commentaires">
-                <h1> Commentaires : </h1> <br/>
-                    {% for comments in comment %}
-                        <div class="col-12">
-                            <div class="comment">
-                                <div class="row">
-                                    {% if comments.user.image %} 
-                                        <div class="roundedImage2"> <img class="widthAvatar" src="{{ asset('/assets/uploads/' ~ comments.user.image) }}" alt="image" ></div>
-                                    {% else %}
-                                        <div  class="roundedImage2"> <img  class="widthAvatar" src="{{'/images/avatar.png'}}" alt="Mute"/></div>
-                                    {% endif %} 
-                                        <div class="card border-dark mb-3" style="max-width: 20rem;">
-                                            <div class="card-header"> {{comments.user}}  (<small>{{comments.createdAt | date('d/m/y')}} à {{comments.createdAt | date('H.i')}})</small></div>
-                                            <div class="card-body">
-                                                <p class="card-text col">{{comments.content | raw}}</p>
-                                            </div> 
-                                        </div>                          
+                    <h1> Commentaires : </h1> <br/>
+                        {% for comments in comment %}
+                            <div class="col-12">
+                                <div class="comment">
+                                    <div class="row">
+                                        {% if comments.user.image %} 
+                                            <div class="roundedImage2"> <img class="widthAvatar" src="{{ asset('/assets/uploads/' ~ comments.user.image) }}" alt="image" ></div>
+                                        {% else %}
+                                            <div  class="roundedImage2"> <img  class="widthAvatar" src="{{'/images/avatar.png'}}" alt="Mute"/></div>
+                                        {% endif %} 
+                                            <div class="card border-dark mb-3" style="max-width: 20rem;">
+                                                <div class="card-header"> {{comments.user}}  (<small>{{comments.createdAt | date('d/m/y')}} à {{comments.createdAt | date('H.i')}})</small></div>
+                                                <div class="card-body">
+                                                    <p class="card-text col">{{comments.content | raw}}</p>
+                                                </div> 
+                                            </div>                          
                                     </div> 
                                 </div>
                             </div>
-                    {% endfor %}
+                        {% endfor %}
 
                         {% set pages = (total / limit)|round(0,'ceil') %}
                         {% if pages %} 
-                        <ul class="pagination" id="pagination-flickr">
-                            <li  class="{{ (page == 1) ? 'page-item disabled' : '' }}">
-                                <a href="{{ (page > 1) ? '?page=' ~ (page - 1) : '' }}">
-                                    <i>&laquo;</i>
-                                </a>  
-                            </li>
-                            {% for item in 1.. pages %}
-                            <li class='{{ (page == item) ? 'page-item active' : '' }}'>
-                                <a href="?page={{item}}">{{item}}</a>
-                            </li> 
-                            {% endfor %} 
-                            <li  class="{{ (page == pages ) ? 'page-item disabled' : '' }}">
-                                <a href="{{ (page < pages) ? '?page=' ~ (page + 1) : '' }}">
-                                    <i>&raquo;</i>
-                                </a>  
-                            </li>
-                        </ul>  
+                            <ul class="pagination" id="pagination-flickr">
+                                <li class="{{ (page == 1) ? 'page-item disabled' : '' }}">
+                                    <a href="{{ (page > 1) ? '?page=' ~ (page - 1) : '' }}">
+                                        <i>&laquo;</i>
+                                    </a>  
+                                </li>
+                                {% for item in 1.. pages %}
+                                <li class='{{ (page == item) ? 'page-item active' : '' }}'>
+                                    <a href="?page={{item}}">{{item}}</a>
+                                </li> 
+                                {% endfor %} 
+                                <li  class="{{ (page == pages ) ? 'page-item disabled' : '' }}">
+                                    <a href="{{ (page < pages) ? '?page=' ~ (page + 1) : '' }}">
+                                        <i>&raquo;</i>
+                                    </a>  
+                                </li>
+                            </ul>  
                         {% endif %}
                     </div>
                 </div>

@@ -13,16 +13,29 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 
 class FigureFixtures extends Fixture
 {
-    const TAB_IMAGE = [
-        "9685ab8dbf9e19694fa35227d4064d21.jpeg",
-        "96849537b73d44b50f8dccfed4936004.jpeg",
-        "a3677699231c2f88ba5ed6fb0b2fdd72.jpeg",
-        "b25cddf8eb0e440bae1f0d9a553b7fd3.jpeg",
-        "bd134784dca3b440ec73e07dac65c0f5.jpeg",
-        "e1cf7c43431c0291c305205be755a48a.jpeg"
+    public const TAB_IMAGE = [
+        "1c629fa5d8d01aebb5b1ee0360963dd3.jpeg",
+        "9a0ad48f1e4f57bacc63a5300dd6ab3a.jpeg",
+        "9f7eafd6dd49e152d7d7b20b70e374a8.jpeg",
+        "022cd46840078c17f44fea2edd4f8e90.jpeg",
+        "055c18b23a6eae186de865be7b8d0ca3.jpeg",
+        "65b307746e0e0cfca9fc96bd6ae078cb.jpeg",
+        "098fc3f03afab0ea0bf45e746d429a86.jpeg",
+        "112e30833a768cf3bb0a35dc870d8200.jpeg",
+        "329b178893797487b201a082d8bdfc3f.jpeg",
+        "689ab87c5ad91c5d120cd6209a3f556e.jpeg",
+        "86382b8345d0d35919b967e830aa5dcd.jpeg",
+        "739760d16869cd4bc81bda19012c85b1.jpeg",
+        "a26e6d97941d17820eb217a1ec538728.jpeg",
+        "a742b55bd980155cb3bfc5c291bf3650.jpeg",
+        "b3a70140caaca5aba40f0f23ab6f0da6.jpeg",
+        "b178603d777a1a5f7183f2f83fe8d228.jpeg",
+        "b07919297168e2f76c9d5faae78d38b4.jpeg",
+        "badd0e545d5251f856e32737c3aa49e1.jpeg",
+        "d2a266dd2920758f2801ab78c7c6c72d.jpeg"
     ];
 
-    const TAB_VIDEO = [
+    public const TAB_VIDEO = [
         "https://www.youtube.com/embed/5mtNg2mf-Hg",
         "https://www.youtube.com/embed/51sQRIK-TEI",
         "https://www.youtube.com/embed/iKkhKekZNQ8",
@@ -83,10 +96,10 @@ class FigureFixtures extends Fixture
 
     public function image($figures, $manager)
     {
-        for ($m = 1; $m <= 30; $m++) {
+        for ($m = 1; $m <= 19; $m++) {
             $image = new Images();
             $image->setFigure($figures[array_rand($figures)])
-                ->setLink(self::TAB_IMAGE[array_rand(self::TAB_IMAGE)]);
+                ->setLink(self::TAB_IMAGE[array_rand(self::TAB_IMAGE, 1)]);
             $manager->persist($image);
         }
     }
