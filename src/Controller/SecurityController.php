@@ -40,8 +40,8 @@ class SecurityController extends AbstractController
             if ($imageFile) {
                 $fileName =  md5(uniqid()) . '.' . $imageFile->guessExtension();
                 $imageFile->move($this->getParameter('images_directory'), $fileName);
+                $user->setimage($fileName); 
             }
-            $user->setimage($fileName);
             $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
             $user->setToken(md5(uniqid()));
