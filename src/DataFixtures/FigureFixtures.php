@@ -18,21 +18,18 @@ class FigureFixtures extends Fixture
         "9a0ad48f1e4f57bacc63a5300dd6ab3a.jpeg",
         "9f7eafd6dd49e152d7d7b20b70e374a8.jpeg",
         "022cd46840078c17f44fea2edd4f8e90.jpeg",
-        "055c18b23a6eae186de865be7b8d0ca3.jpeg",
         "65b307746e0e0cfca9fc96bd6ae078cb.jpeg",
-        "098fc3f03afab0ea0bf45e746d429a86.jpeg",
-        "112e30833a768cf3bb0a35dc870d8200.jpeg",
         "329b178893797487b201a082d8bdfc3f.jpeg",
-        "689ab87c5ad91c5d120cd6209a3f556e.jpeg",
-        "86382b8345d0d35919b967e830aa5dcd.jpeg",
         "739760d16869cd4bc81bda19012c85b1.jpeg",
         "a26e6d97941d17820eb217a1ec538728.jpeg",
         "a742b55bd980155cb3bfc5c291bf3650.jpeg",
-        "b3a70140caaca5aba40f0f23ab6f0da6.jpeg",
-        "b178603d777a1a5f7183f2f83fe8d228.jpeg",
         "b07919297168e2f76c9d5faae78d38b4.jpeg",
         "badd0e545d5251f856e32737c3aa49e1.jpeg",
-        "d2a266dd2920758f2801ab78c7c6c72d.jpeg"
+        "d2a266dd2920758f2801ab78c7c6c72d.jpeg",
+        'd93eb93b488ac1303a2d3135a781a21d.jpeg',
+        '379fc4e0dcee03f3b2db6c3fba9b50e4.jpeg',
+        'b7f66ee6b69474cbb39a34f33ba81b1e.jpeg',
+        'e492e04b4c0dc0bf7f7b3236847d4664.jpeg'
     ];
 
     public const TAB_VIDEO = [
@@ -42,6 +39,13 @@ class FigureFixtures extends Fixture
         "https://www.youtube.com/embed/_Qq-YoXwNQY"
     ];
 
+    public const TAB_AVATAR = [
+        '7be9ec98e24718e193edf3fe6b00ae47.jpeg',
+        '52c899fce5d77e2296bc0d9ef3b56c58.jpeg',
+        'cec2c6534486e016a3f460a278989771.jpeg',
+        'f90b4966fa6ee07de27143714018def5.jpeg',
+        '0ead2d839189b690d7e64883d02795fb.jpeg'
+    ];
 
     public function load(ObjectManager $manager)
     {
@@ -62,18 +66,18 @@ class FigureFixtures extends Fixture
         }
 
         $users = [];
-        for ($k = 1; $k <= 5; $k++) {
+        for ($k = 0; $k < 5; $k++) {
             $user = new User();
             $user->setLogin($faker->firstName())
                 ->setPassword($faker->password())
-                ->setImage(self::TAB_IMAGE[array_rand(self::TAB_IMAGE, 1)])
+                ->setImage(self::TAB_AVATAR[$k])
                 ->setMail($faker->email());
             $users[] = $user;
             $manager->persist($user);
         }
 
         $figures = [];
-        for ($j = 1; $j <= 11; $j++) {
+        for ($j = 1; $j <= 10; $j++) {
             $figure = new Figure();
             $figure->setName($faker->word())
                 ->setSlug($figure->getName())
@@ -96,10 +100,10 @@ class FigureFixtures extends Fixture
 
     public function image($figures, $manager)
     {
-        for ($m = 1; $m <= 19; $m++) {
+        for ($m = 0; $m < count(self::TAB_IMAGE); $m++) {
             $image = new Images();
             $image->setFigure($figures[array_rand($figures)])
-                ->setLink(self::TAB_IMAGE[array_rand(self::TAB_IMAGE, 1)]);
+                ->setLink(self::TAB_IMAGE[$m]);
             $manager->persist($image);
         }
     }
